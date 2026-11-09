@@ -1,0 +1,2 @@
+# gitleaks ignore false positives
+skills/building-with-the-claude-api/docs/third-party-platforms/microsoft-foundry.md:curl-auth-header:138

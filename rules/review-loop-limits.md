@@ -1,0 +1,34 @@
+# Review Loop Iteration Limits
+
+These limits apply to full workflow and orchestrator paths only. Fast-path and coordinated-fast-path changes have no formal review loops per workflow-routing.md. Coordinated-fast-path leaf dispatches still honor the per-dispatch bailout in rules/dispatch-prompt-contract.md (max 2 fix attempts on the same issue → BLOCKED).
+
+When using subagent-driven-development or any workflow with review loops:
+
+## Spec Compliance Review Loop
+- **Max 2 fix rounds per task.** Reviewer finds issues → implementer fixes (round 1) → reviewer finds issues again → implementer fixes (round 2) → if reviewer still finds issues → STOP.
+- Escalate to human: "Task N has failed spec compliance after 2 fix rounds. The spec may be ambiguous or the task scope may be wrong."
+- Do NOT keep looping. Something is structurally wrong.
+
+## Code Quality Review Loop
+- **Max 2 fix rounds per task.** Same rule as spec compliance.
+- If quality issues persist after 2 fix rounds, the implementation approach needs rethinking, not more patches.
+
+## Combined Limit
+- **Max 4 total review iterations per task** (spec + quality combined).
+- If a task consumes 4+ review rounds, it's too complex for a single dispatch. Split it.
+
+## Implementer Fix Rounds
+- When reviewer sends implementer back to fix:
+  - Fix round 1: Normal — address specific issues
+  - Fix round 2: Concerning — check if issues are symptoms of a deeper problem. If issues persist after fix round 2 → STOP and escalate. Do not begin a third fix round.
+
+## Convergence Across Rounds
+- A re-review after a fix round covers the fix diff, not the whole change, unless the fix touched shared behavior.
+- When a reviewer finds a bug class (e.g., unvalidated input at a boundary), fix the class across the diff in one round, not instance by instance over several rounds.
+- Do not re-raise a finding already fixed or cleared with a stated reason; cite the earlier round instead.
+- A finding that survives two fix rounds counts as a structural problem and triggers escalation.
+
+## What "Escalate" Means
+1. Report to human: which task, what was tried, what keeps failing
+2. Propose: split the task, simplify the spec, or change the approach
+3. Wait for human decision before continuing

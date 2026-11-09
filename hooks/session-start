@@ -1,0 +1,48 @@
+#!/bin/bash
+# Load one local bootstrap as JSON data. The 48 KiB cap is local policy.
+set -euo pipefail
+
+if ! command -v python3 >/dev/null 2>&1; then
+    printf '%s\n' '{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":""},"systemMessage":"Bootstrap omitted: python3 is unavailable."}'
+    exit 0
+fi
+
+hook_dir="${BASH_SOURCE[0]%/*}"
+config_root="$(cd -- "$hook_dir/.." && pwd -P)"
+exec python3 - "$config_root" <<'PY'
+import json
+from pathlib import Path
+import sys
+
+LIMIT = 49152
+root = Path(sys.argv[1])
+skill = root / 'skills/session-bootstrap/SKILL.md'
+payload = {'hookSpecificOutput': {'hookEventName': 'SessionStart', 'additionalContext': ''}}
+
+def omit(reason):
+    payload['systemMessage'] = 'Bootstrap omitted: ' + reason + '.'
+
+try:
+    if any(p.is_symlink() for p in (root, root / 'skills', skill.parent, skill)):
+        omit('unexpected symbolic link')
+    elif not skill.is_file():
+        omit('session-bootstrap is unavailable')
+    else:
+        with skill.open('rb') as handle:
+            content = handle.read(LIMIT + 1)
+        if len(content) > LIMIT:
+            omit('the local 48 KiB input budget was exceeded')
+            payload['hookSpecificOutput']['additionalContext'] = '[TRUNCATED: bootstrap omitted in full. Load session-bootstrap via Skill if needed.]'
+        else:
+            text = content.decode('utf-8')
+            payload['hookSpecificOutput']['additionalContext'] = '<session-bootstrap>\n' + text + '\n</session-bootstrap>'
+except (OSError, UnicodeError):
+    omit('session-bootstrap could not be read as UTF-8')
+
+encoded = json.dumps(payload, ensure_ascii=False, separators=(',', ':'))
+if len((encoded + '\n').encode('utf-8')) > LIMIT:
+    payload['hookSpecificOutput']['additionalContext'] = '[TRUNCATED: bootstrap omitted in full because serialized JSON exceeds the local 48 KiB budget. Load session-bootstrap via Skill if needed.]'
+    omit('the local serialized-output budget was exceeded')
+    encoded = json.dumps(payload, ensure_ascii=False, separators=(',', ':'))
+print(encoded)
+PY

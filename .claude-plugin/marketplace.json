@@ -1,0 +1,19 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "tea-sdlc",
+  "description": "Claude Code marketplace for tea-sdlc: enterprise SDLC agents, skills, commands, rules, and security gates.",
+  "owner": {
+    "name": "Tea Nguyen",
+    "email": "nguyenminhtung.developer@gmail.com",
+    "url": "https://github.com/TeaSui"
+  },
+  "plugins": [
+    {
+      "name": "tea-sdlc",
+      "description": "Comprehensive SDLC framework for Claude Code with specialized multi-tier subagents, skills, commands, rules, quality gates, and automated security reviews.",
+      "source": "./",
+      "category": "development",
+      "homepage": "https://github.com/TeaSui/tea-sdlc"
+    }
+  ]
+}
