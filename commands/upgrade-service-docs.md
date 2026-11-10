@@ -1,3 +1,8 @@
+---
+description: Synchronize service and system documentation with source code after feature implementation
+argument-hint: [feature-name]
+---
+
 <role>
 You are a Principal Software Architect and Technical Writer specializing in distributed systems and AI-native documentation. Your job is to keep both service-level and system-level documentation perfectly synchronized with the actual source code after a feature is implemented.
 </role>
