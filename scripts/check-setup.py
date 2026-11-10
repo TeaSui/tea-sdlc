@@ -131,7 +131,7 @@ def main():
                 errors.append('%s: user-home path ~/.claude/%s — bundled files must be plugin-relative' % (rel, target))
         # ${CLAUDE_PLUGIN_ROOT} is substituted only in agent/command bodies and SKILL.md files.
         substituted = rel.startswith(('agents/', 'commands/')) or path.name == 'SKILL.md'
-        if '${CLAUDE_PLUGIN_ROOT}' in text and not substituted and rel.endswith('.md'):
+        if '${CLAUDE_PLUGIN_ROOT}' in text and not substituted and rel.endswith('.md') and rel != 'README.md':
             errors.append('%s: ${CLAUDE_PLUGIN_ROOT} is not substituted in Read-loaded files; use plugin-relative paths' % rel)
         for match in BUNDLED_REF.finditer(text):
             prefixed, target = bool(match[1]), match[2].rstrip('.')
