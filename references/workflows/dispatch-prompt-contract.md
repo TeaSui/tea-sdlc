@@ -16,7 +16,7 @@
 
 ## Why this shape
 
-Derived directly from `skills/building-with-the-claude-api/docs/best-practices/prompt-engineering/prompting-best-practices.md`:
+Derived from Anthropic's prompting best practices (https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices.md):
 
 - **"Structure prompts with XML tags"** — consistent descriptive tags reduce misinterpretation; each field has its own tag.
 - **"Be clear and direct"** — every field is stated explicitly and scoped. Do not rely on the model generalizing implicit intent.

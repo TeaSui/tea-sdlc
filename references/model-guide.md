@@ -2,14 +2,16 @@
 
 Verified 2026-11-10 against [Which Claude model should you build with?](https://claude.dev/blog/which-claude-model-should-you-build-with) (2026-11-09), [Code model configuration](https://code.claude.com/docs/en/model-config), [subagents](https://code.claude.com/docs/en/sub-agents) and [Platform model overview](https://platform.claude.com/docs/en/models/overview). This is a starting policy, not a measured optimum for every task. Recheck these sources when upgrading.
 
-| Model (alias) | Price in/out per MTok | Starting effort | Choose for |
-|---|---|---|---|
-| Haiku 5.5 (`haiku`) | $0.10/$0.50 ≤100K prompt; $0.50/$2.50 above | `medium` | Classification, routing, extraction; subagents that search files, read logs or summarize; checkable high-volume work. Not long agentic loops |
-| Sonnet 5.5 (`sonnet`) | $2/$10 | `medium` → `high` | Well-scoped, spec-driven coding; repeated investigation/review/drafting; documents; interactive chat (`low`/`medium`) |
-| Opus 5.5 (`opus`) | $4/$20 | `medium` → `high` | Default when unsure; everyday engineering, debugging, multi-PR features; judgment calls; computer use and vision |
-| Fable 5.2 (`fable`) | $8/$40 | `medium` → `high` | Major refactors/migrations, architecture planning, leading many subagents, deep research, long unattended runs, or when Opus at `high` still falls short |
+**Always the latest model of a family.** Agent frontmatter and sessions use family aliases (`haiku`, `sonnet`, `opus`, `fable`), which Claude Code resolves to the newest release of that family. Never pin a versioned ID in agent frontmatter or plugin guidance. Versions below are a dated snapshot for orientation only (as of 2026-11-09: Haiku 5.5, Sonnet 5.5, Opus 5.5, Fable 5.2).
 
-Exact Claude API IDs: `claude-opus-5-5`, `claude-sonnet-5-5`, `claude-haiku-5-5`; verify the current Fable ID in the Platform model overview before pinning it. The bundled `building-with-the-claude-api` reference was verified earlier (Fable 5.1); prefer the `fable` alias over a pinned ID. All four have a 1M context window and 128K max output.
+| Family (alias) | Price in/out per MTok (2026-11-09; recheck) | Starting effort | Choose for |
+|---|---|---|---|
+| Haiku (`haiku`) | $0.10/$0.50 ≤100K prompt; $0.50/$2.50 above | `medium` | Classification, routing, extraction; subagents that search files, read logs or summarize; checkable high-volume work. Not long agentic loops |
+| Sonnet (`sonnet`) | $2/$10 | `medium` → `high` | Well-scoped, spec-driven coding; repeated investigation/review/drafting; documents; interactive chat (`low`/`medium`) |
+| Opus (`opus`) | $4/$20 | `medium` → `high` | Default when unsure; everyday engineering, debugging, multi-PR features; judgment calls; computer use and vision |
+| Fable (`fable`) | $8/$40 | `medium` → `high` | Major refactors/migrations, architecture planning, leading many subagents, deep research, long unattended runs, or when Opus at `high` still falls short |
+
+For Claude **API** code (where every model ID is a fixed snapshot and there is no `-latest` alias for current models), resolve the latest ID at build time with the Models API — see `references/ai-integration-patterns.md` § Model IDs in code.
 
 ## How to choose
 
@@ -35,7 +37,7 @@ Frontmatter sets the normal job; a dispatcher overrides `model` only when a task
 | backend / frontend / mobile / platform / data engineers | sonnet | high | Spec-driven coding against accepted contracts with tests to self-verify; `high` because these run in gated tiers where rework costs more than effort | `opus` for ambiguous bugs, cross-cutting refactors or when `high` still fails |
 | qa-subagent | sonnet | medium | Runs tests and checks evidence; outputs are checkable | `high` for large release scopes |
 | codebase-mapper | haiku | medium | File search, reading and summarizing | `sonnet` for very large or unconventional codebases |
-| orchestrating-multi-domain-work (skill) | main session | — | Runs in the main session (Opus default, Fable for long multi-agent runs) | — |
+| orchestrating-multi-domain-work (skill) | main session | — | Runs in the main session (`opus` default, `fable` for long multi-agent runs) | — |
 
 ## Use in Claude Code
 
@@ -46,7 +48,7 @@ Frontmatter sets the normal job; a dispatcher overrides `model` only when a task
 - `/model` and `/effort` inspect/change the session; `/status`, `/context`, `/hooks` show configuration, context use and active hooks.
 - `opusplan` (Opus plans, Sonnet executes) is the reverse of the advice above; measure before making it a default.
 
-Claude Code supports `low`, `medium`, `high`, `xhigh`, `max`. Save per-model preferences under `modelSettings` with `effortLevel` (`low` through `xhigh`); `max` is a session choice. Code defaults: Haiku `medium`, Sonnet `medium`, Opus `medium`, Fable `medium` (API defaults differ: Sonnet and Fable `high`). Code manages adaptive reasoning; API `thinking` objects are not Code settings.
+Claude Code supports `low`, `medium`, `high`, `xhigh`, `max`. Save per-model preferences under `modelSettings` with `effortLevel` (`low` through `xhigh`); `max` is a session choice. Code defaults (current releases): Haiku `medium`, Sonnet `medium`, Opus `medium`, Fable `medium` (API defaults differ: Sonnet and Fable `high`). Code manages adaptive reasoning; API `thinking` objects are not Code settings.
 
 ## Custom agents
 
@@ -56,4 +58,4 @@ Give every model a clear goal, scope and evidence requirements. Use a complete t
 
 ## API is separate
 
-API code uses request-level `output_config.effort`, adaptive reasoning and adequate `max_tokens`. Do not transplant Code settings into requests or API controls into settings.json. Use the `building-with-the-claude-api` skill for API work.
+API code uses request-level `output_config.effort`, adaptive reasoning and adequate `max_tokens`. Do not transplant Code settings into requests or API controls into settings.json. For API work use Claude Code's built-in `/claude-api` skill and the live sources in `references/ai-integration-patterns.md` § Sources of truth.

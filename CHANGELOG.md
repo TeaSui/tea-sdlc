@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.0 — 2026-11-10
+
+### Removed
+- Vendored `building-with-the-claude-api` skill (3.2 MB, self-described as largely obsolete). Replaced by Claude Code's built-in `/claude-api` skill plus live sources (docs `.md` pages, `llms.txt`, docs MCP server, Context7) listed in `references/ai-integration-patterns.md`.
+
+### Changed
+- Model guidance is version-agnostic: agents use family aliases that resolve to the latest release; API code resolves the latest ID via the Models API (`line`, `lifecycle`) and pins it in config. `check-setup.py` rejects versioned IDs in agent frontmatter.
+
 ## 2.0.0 — 2026-11-10
 
 ### Breaking

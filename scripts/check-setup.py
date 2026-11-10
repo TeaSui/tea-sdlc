@@ -14,7 +14,7 @@ EFFORTS = {'low', 'medium', 'high', 'xhigh', 'max'}
 BUNDLED_DIRS = ('rules', 'references', 'skills', 'templates', 'scripts', 'hooks', 'commands', 'agents')
 # Prose that the plugin authors and loads; vendored/synced skill docs are excluded.
 SCANNED = ('agents', 'commands', 'rules', 'references', 'skills', 'hooks', 'scripts')
-EXCLUDED = ('skills/synced/', 'skills/building-with-the-claude-api/docs/')
+EXCLUDED = ('skills/synced/',)
 # ~/.claude paths that legitimately belong to the user's install, not the plugin.
 USER_PATHS = ('settings.json', 'CLAUDE.md', 'state/', 'projects/', 'agent-memory/')
 BUNDLED_REF = re.compile(r'(?<![\w./~-])(\$\{CLAUDE_PLUGIN_ROOT\}/)?((?:%s)/[A-Za-z0-9_./-]+\.(?:md|py|sh|json))'
@@ -111,8 +111,8 @@ def main():
         if path in agents + skills and 'name' not in fields:
             errors.append(rel + ': missing name')
         if path in agents:
-            if fields.get('model') not in MODELS and not fields.get('model', '').startswith('claude-'):
-                errors.append(rel + ': unsupported model %r' % fields.get('model'))
+            if fields.get('model') not in MODELS:
+                errors.append(rel + ': model must be a family alias (latest release), got %r' % fields.get('model'))
             if fields.get('effort', 'high') not in EFFORTS:
                 errors.append(rel + ': unsupported effort %r' % fields.get('effort'))
     parsed = yaml_errors(agents + skills + commands)

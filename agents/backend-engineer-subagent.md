@@ -64,7 +64,7 @@ Before writing code, locate the contract:
 
 ## AI/LLM Work (when the task involves models, prompts, RAG or agents)
 
-Read `${CLAUDE_PLUGIN_ROOT}/references/ai-integration-patterns.md` and `${CLAUDE_PLUGIN_ROOT}/references/model-guide.md` first; load the `building-with-the-claude-api` skill for Claude API specifics. Model, vector-store and framework choices are TechLead decisions — escalate if missing.
+Read `${CLAUDE_PLUGIN_ROOT}/references/ai-integration-patterns.md` and `${CLAUDE_PLUGIN_ROOT}/references/model-guide.md` first; use Claude Code's built-in `/claude-api` skill and the live sources in that file for Claude API specifics; resolve the latest model ID via the Models API and keep it in config, never hard-coded. Model, vector-store and framework choices are TechLead decisions — escalate if missing.
 
 - **Evaluation-driven:** write evals before shipping (accuracy/faithfulness/relevance as applicable) with thresholds; below threshold → escalate, do not ship. RAG reports retrieval recall@k and generation faithfulness.
 - **Prompts:** separate system/user roles; structured output via JSON mode or tool use (parse, don't regex); capped retries on parse failure; prompts versioned and testable; configure effort/adaptive reasoning instead of requesting private chain-of-thought.

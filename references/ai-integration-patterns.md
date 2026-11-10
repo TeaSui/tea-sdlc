@@ -1,9 +1,22 @@
 # AI Integration Rules
 
+## Sources of truth (live, never vendored)
+Claude API details change faster than any local copy. Use, in this order:
+1. Claude Code's built-in **`/claude-api`** skill (ships and updates with Claude Code; auto-loads when code imports `anthropic` / `@anthropic-ai/sdk`; subcommands for migration, SDK upgrades, cost and evals).
+2. Official docs, read live: append `.md` to any page (e.g. https://platform.claude.com/docs/en/models/overview.md); index at https://platform.claude.com/llms.txt; docs MCP server at https://platform.claude.com/docs/mcp; Context7 library `/websites/platform_claude_en` (confirm with `resolve-library-id`).
+3. The installed SDK's source and changelog (`anthropic-sdk-python`, `anthropic-sdk-typescript`).
+Never answer API shapes, model IDs, prices or limits from memory or from an old snippet.
+
 ## Model Selection
-- Current selection policy: `references/model-guide.md`; current API details: `skills/building-with-the-claude-api/references/current-models.md`.
-- Start an unspecified substantial workload with Opus 5.5 at medium effort. Use Sonnet 5.5 for clear bounded implementation, Haiku 5.5 for measured mechanical/volume tasks, Fable (current version in `references/model-guide.md`) for difficult reasoning and long autonomous work.
+- Selection policy: `references/model-guide.md`. Start an unspecified substantial workload on the latest Opus at medium effort; latest Sonnet for clear bounded implementation; latest Haiku for measured mechanical/volume tasks; latest Fable for difficult reasoning and long autonomous work.
 - Validate quality, latency and cost on representative cases; keep a concise rationale where a choice is non-obvious. Do not impose historical model/effort defaults on current tasks.
+
+## Model IDs in code
+Every Claude API model ID is a fixed snapshot (dateless IDs included); current models have no `-latest` alias. So "use the latest model" means *resolve it, then pin it in config*:
+- Resolve: `GET /v1/models?lifecycle=active` (SDK `client.models.list()`) lists newer releases first; take the first entry whose `line` equals the wanted family (`opus`, `sonnet`, `haiku`, `fable`). Read `line` and `capabilities`, never parse the ID. Newest is not automatically recommended — check the models overview for the family's intended use.
+- Pin: store the resolved ID in configuration (env var / config file), never as a literal scattered through code, so an upgrade is a one-line, reviewed change.
+- Upgrade deliberately: before switching, read the target's migration guide (via `/claude-api migrate` or the docs), re-run evals, and compare cost/latency. Monitor `lifecycle`, `deprecated_at` and `retires_at` from the Models API (e.g. a scheduled check) so retirement never surprises production.
+- Never invent date-suffixed IDs or assume a provider (Bedrock, Vertex, Foundry) serves the same ID as the first-party API.
 
 ## Prompt Engineering Standards
 - Store prompts as versioned constants, not inline strings
@@ -49,7 +62,7 @@ Return JSON with fields: category, risk_level, confidence.
 - Keep request output budgets adequate for thinking plus response. Re-baseline quality/cost when changing models rather than copying prior-generation tuning.
 
 ## Prompt Caching
-- Cache system prompts that are ≥1024 tokens and used repeatedly
+- Cache system prompts that are used repeatedly and exceed the model's minimum cacheable length (check the live prompt-caching docs)
 - Cache retrieved documents in RAG pipelines
 - Use `cache_control: {"type": "ephemeral"}` on cacheable blocks
 - Monitor cache hit rate — target >80% for repeated prompts
