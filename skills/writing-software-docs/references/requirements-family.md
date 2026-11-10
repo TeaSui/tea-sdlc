@@ -18,7 +18,7 @@ When unsure between PRD and FRD: if the reader needs to make a product/scope dec
 ## 1. Introduction
 ### 1.1 Purpose
 ### 1.2 Scope
-### 1.3 Definitions  <!-- if docs/domain/glossary.md exists, point to it and list only doc-local terms; do not restate glossary entries (rules/single-source-of-truth.md) -->
+### 1.3 Definitions  <!-- if the top-scope glossary.md exists, point to it and list only doc-local terms; do not restate glossary entries (rules/single-source-of-truth.md) -->
 ## 2. Business Background
 ## 3. Business Objectives
 ## 4. Stakeholders

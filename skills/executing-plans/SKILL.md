@@ -11,4 +11,4 @@ Follow the routing tier, Security rules and contracts. Execute tasks in dependen
 
 Use project isolation when concurrent changes/risk require it and the runtime supports it; do not require a missing worktree skill or initialize a Git repository merely to follow the plan. Preserve other changes. Reuse existing scope authorization and honor explicit human checkpoints; do not add new confirmation loops for internal execution choices.
 
-Debug failures from reproduced evidence. Bound fix/review attempts per `rules/review-loop-limits.md`; stop dependent work and explain the blocker when no safe authorized path remains. Finish with actual verification and the already-authorized delivery action. Use finishing-a-development-branch for a Git branch when applicable.
+Debug failures from reproduced evidence. Bound fix/review attempts per `${CLAUDE_PLUGIN_ROOT}/rules/review-loop-limits.md`; stop dependent work and explain the blocker when no safe authorized path remains. Finish with actual verification and the already-authorized delivery action. Use finishing-a-development-branch for a Git branch when applicable.

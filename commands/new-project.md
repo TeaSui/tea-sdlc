@@ -23,14 +23,14 @@ After this command: run the planning command for Phase 1.
 ## Supporting files
 
 Read these before running:
-- Questioning techniques: `~/.claude/planning-references/questioning.md`
-- UI/brand tone (banners, section dividers): `~/.claude/planning-references/ui-brand.md`
+- Questioning techniques: `${CLAUDE_PLUGIN_ROOT}/references/planning/questioning.md`
+- UI/brand tone (banners, section dividers): `${CLAUDE_PLUGIN_ROOT}/references/planning/ui-brand.md`
 - Templates you will fill in:
-  - `~/.claude/planning-templates/project.md`
-  - `~/.claude/planning-templates/requirements.md`
-  - `~/.claude/planning-templates/roadmap.md`
-  - `~/.claude/planning-templates/state.md`
-  - `~/.claude/planning-templates/research/{STACK,FEATURES,ARCHITECTURE,PITFALLS,SUMMARY}.md`
+  - `${CLAUDE_PLUGIN_ROOT}/templates/planning/project.md`
+  - `${CLAUDE_PLUGIN_ROOT}/templates/planning/requirements.md`
+  - `${CLAUDE_PLUGIN_ROOT}/templates/planning/roadmap.md`
+  - `${CLAUDE_PLUGIN_ROOT}/templates/planning/state.md`
+  - `${CLAUDE_PLUGIN_ROOT}/templates/planning/research/{STACK,FEATURES,ARCHITECTURE,PITFALLS,SUMMARY}.md`
 
 ## Arguments
 
@@ -66,7 +66,7 @@ echo "project_exists=$PROJECT_EXISTS has_git=$HAS_GIT has_codebase_map=$HAS_CODE
 - Resolve `commit_docs` **before the first commit**: reuse the task's explicit choice or existing `.planning/config.json`; otherwise ask once whether to commit planning docs. In `--auto`, use a supplied preference; if none exists, default to leaving artifacts uncommitted rather than inventing consent to repository/history changes.
 - If `HAS_GIT=false`, initialize Git only when repository creation is within the user's authorization. Recheck `HAS_GIT` afterward. Planning artifacts can be written without a repository.
 - Before **every** planning commit, require `HAS_GIT=true` and `commit_docs=true`, inspect the staged diff, stage only owned planning paths, and avoid including unrelated staged work. No opt-out can be overridden by `--auto` or a later checkpoint.
-- Follow `~/.claude/rules/workflow-routing.md` for planning/dispatch scope and prerequisite order; research does not authorize implementation or external writes.
+- Follow `${CLAUDE_PLUGIN_ROOT}/rules/workflow-routing.md` for planning/dispatch scope and prerequisite order; research does not authorize implementation or external writes.
 
 ### 2. Brownfield offer (skip in auto mode)
 
@@ -94,7 +94,7 @@ Display stage banner:
 
 Use the existing idea/session context first. Ask **"What do you want to build?"** only if the goal is missing.
 
-Then follow threads based on the response. Use techniques from `~/.claude/planning-references/questioning.md`:
+Then follow threads based on the response. Use techniques from `${CLAUDE_PLUGIN_ROOT}/references/planning/questioning.md`:
 - Challenge vagueness — "what do you mean by X?"
 - Make abstract concrete — "can you give me an example?"
 - Surface assumptions — "what would have to be true for this to work?"
@@ -107,7 +107,7 @@ Mentally track the context checklist (problem, user, success, constraints, key d
 
 ### 4. Write PROJECT.md
 
-Read the template at `~/.claude/planning-templates/project.md` and fill it in with everything you've gathered.
+Read the template at `${CLAUDE_PLUGIN_ROOT}/templates/planning/project.md` and fill it in with everything you've gathered.
 
 **Greenfield:** Requirements → Active = hypotheses; Validated = (None yet — ship to validate).
 **Brownfield (codebase map exists):** read `.planning/codebase/ARCHITECTURE.md` and `STACK.md`, treat existing capabilities as Validated; new asks go into Active.
@@ -210,18 +210,18 @@ Milestone context: <greenfield | subsequent>
 
 Then per-agent specifics:
 
-**Agent 1 — Stack** → writes `.planning/research/STACK.md` using template `~/.claude/planning-templates/research/STACK.md`. Question: *"What's the standard 2026 stack for [domain]?"* Downstream: feeds roadmap. Be prescriptive: specific libraries + versions, rationale, what NOT to use.
+**Agent 1 — Stack** → writes `.planning/research/STACK.md` using template `${CLAUDE_PLUGIN_ROOT}/templates/planning/research/STACK.md`. Question: *"What's the standard 2026 stack for [domain]?"* Downstream: feeds roadmap. Be prescriptive: specific libraries + versions, rationale, what NOT to use.
 
-**Agent 2 — Features** → writes `.planning/research/FEATURES.md` using template `~/.claude/planning-templates/research/FEATURES.md`. Question: *"What features do [domain] products have? Table stakes vs differentiating vs anti-features?"* Downstream: feeds requirements scoping.
+**Agent 2 — Features** → writes `.planning/research/FEATURES.md` using template `${CLAUDE_PLUGIN_ROOT}/templates/planning/research/FEATURES.md`. Question: *"What features do [domain] products have? Table stakes vs differentiating vs anti-features?"* Downstream: feeds requirements scoping.
 
-**Agent 3 — Architecture** → writes `.planning/research/ARCHITECTURE.md` using template `~/.claude/planning-templates/research/ARCHITECTURE.md`. Question: *"How are [domain] systems typically structured? Major components, data flow, build order?"* Downstream: informs phase structure.
+**Agent 3 — Architecture** → writes `.planning/research/ARCHITECTURE.md` using template `${CLAUDE_PLUGIN_ROOT}/templates/planning/research/ARCHITECTURE.md`. Question: *"How are [domain] systems typically structured? Major components, data flow, build order?"* Downstream: informs phase structure.
 
-**Agent 4 — Pitfalls** → writes `.planning/research/PITFALLS.md` using template `~/.claude/planning-templates/research/PITFALLS.md`. Question: *"What do [domain] projects commonly get wrong?"* For each pitfall: warning signs, prevention, which phase should address.
+**Agent 4 — Pitfalls** → writes `.planning/research/PITFALLS.md` using template `${CLAUDE_PLUGIN_ROOT}/templates/planning/research/PITFALLS.md`. Question: *"What do [domain] projects commonly get wrong?"* For each pitfall: warning signs, prevention, which phase should address.
 
 After all 4 complete, **spawn a synthesizer** (`general-purpose`, sequential, not parallel):
 ```
 Synthesize .planning/research/STACK.md + FEATURES.md + ARCHITECTURE.md + PITFALLS.md
-into .planning/research/SUMMARY.md using template ~/.claude/planning-templates/research/SUMMARY.md.
+into .planning/research/SUMMARY.md using template ${CLAUDE_PLUGIN_ROOT}/templates/planning/research/SUMMARY.md.
 
 Extract: recommended stack, table-stakes features, key architectural decisions, top pitfalls.
 Return ~10 lines of confirmation after writing.
@@ -274,7 +274,7 @@ Ask once: *"Any requirements research missed? (Features specific to your vision)
 
 Cross-check v1 against the Core Value from PROJECT.md. Surface gaps.
 
-**Write REQUIREMENTS.md** using template `~/.claude/planning-templates/requirements.md`:
+**Write REQUIREMENTS.md** using template `${CLAUDE_PLUGIN_ROOT}/templates/planning/requirements.md`:
 - v1 requirements grouped by category, with REQ-IDs `[CATEGORY]-[NN]` (AUTH-01, CONTENT-02)
 - v2 requirements (deferred)
 - Out of scope (with reasoning)
@@ -325,8 +325,8 @@ You are a roadmap architect. Produce a phased roadmap from project + requirement
 3. Derive 2-5 success criteria per phase, phrased as observable user behaviors.
 4. Depth target from config.json: quick=3-5 phases, standard=5-8, comprehensive=8-12.
 5. Write files immediately (don't return content):
-   - .planning/ROADMAP.md  (use template ~/.claude/planning-templates/roadmap.md)
-   - .planning/STATE.md    (use template ~/.claude/planning-templates/state.md — initial state, phase 1 pending)
+   - .planning/ROADMAP.md  (use template ${CLAUDE_PLUGIN_ROOT}/templates/planning/roadmap.md)
+   - .planning/STATE.md    (use template ${CLAUDE_PLUGIN_ROOT}/templates/planning/state.md — initial state, phase 1 pending)
    - Update .planning/REQUIREMENTS.md traceability section to map each REQ-ID to its phase.
 6. Return in this format only:
 
@@ -355,7 +355,7 @@ Does this roadmap structure work for you?
 - Adjust — tell me what to change (I'll re-spawn the roadmapper)
 - Review full file — show raw ROADMAP.md
 ```
-On Adjust: capture notes and re-dispatch with a `<revision>` block referencing `.planning/ROADMAP.md`. Respect `~/.claude/rules/review-loop-limits.md` for agent review/dispatch rounds; unresolved scope decisions go back to the user rather than an unbounded loop.
+On Adjust: capture notes and re-dispatch with a `<revision>` block referencing `.planning/ROADMAP.md`. Respect `${CLAUDE_PLUGIN_ROOT}/rules/review-loop-limits.md` for agent review/dispatch rounds; unresolved scope decisions go back to the user rather than an unbounded loop.
 
 Commit only if `HAS_GIT=true` and `commit_docs=true`:
 ```bash

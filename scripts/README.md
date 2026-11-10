@@ -1,17 +1,17 @@
-# ~/.claude/scripts/
+# scripts/
 
 Headless Claude Code scripts for non-interactive tasks.
 
 ## validate.sh
 
-Starts a headless Claude session using `~/.claude/skills/validate-feature/SKILL.md`.
+Starts a headless Claude session using `skills/validate-feature/SKILL.md`.
 By default it validates pending staged, unstaged and untracked work. An explicit
 task target takes precedence; it never silently falls back to a previous commit.
 
 ```bash
-chmod +x ~/.claude/scripts/validate.sh
-~/.claude/scripts/validate.sh              # pending staged/unstaged/untracked work
-~/.claude/scripts/validate.sh "src/auth"  # filter by path
+chmod +x scripts/validate.sh
+scripts/validate.sh              # pending staged/unstaged/untracked work
+scripts/validate.sh "src/auth"  # filter by path
 ```
 
 Run from the intended project/module. The optional filter is literal path data.
@@ -31,3 +31,11 @@ requires contextual review; it is not an automatic failure.
   tool set or make arbitrary shell commands safe. The launcher retains its existing
   tool permission flags. See the [official CLI reference](https://code.claude.com/docs/en/cli-reference).
 - `--output-format text` for clean pipe-friendly output
+
+## check-setup.py
+
+Structural checks for the plugin itself: manifests and version, agent/skill/command frontmatter (model, effort, YAML), every bundled path reference, no `~/.claude/` paths to bundled files, and the SessionStart hook output contract. Run before every release:
+
+```bash
+python3 scripts/check-setup.py
+```

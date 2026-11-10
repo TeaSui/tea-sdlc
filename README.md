@@ -2,7 +2,7 @@
 
 > Comprehensive Software Development Life Cycle (SDLC) plugin for Claude Code.
 
-`tea-sdlc` transforms Claude Code into an enterprise-grade autonomous engineering team with 17 specialized subagents, 4-tier workflow routing, automated quality gates, and battle-tested domain skills.
+`tea-sdlc` transforms Claude Code into an enterprise-grade autonomous engineering team with 12 specialized subagents, 4-tier workflow routing, automated quality gates, and battle-tested domain skills.
 
 ---
 
@@ -45,26 +45,21 @@ Or configure permanently in `~/.claude/settings.json`:
 
 ## 🏗️ Architecture & Features
 
-### 1. 17 Specialized Subagents (`agents/`)
+### 1. 12 Specialized Subagents (`agents/`)
 
 | Agent | Role & Ownership |
 |---|---|
-| `agent-orchestrator` | Coordinates multi-domain trust-boundary tasks (Security → Contracts → Execution → QA) |
 | `tech-lead-subagent` | Architecture decisions, API contracts (OpenAPI), and module interfaces |
 | `security-engineer-subagent` | Threat modeling (STRIDE), PII, auth, and secret boundaries |
-| `backend-engineer-subagent` | API implementation, business logic, DB access (Go, Java/Spring, Python, Rust) |
+| `backend-engineer-subagent` | API implementation, business logic, DB access (Go, Java/Spring, Python, Rust), LLM/RAG/agent features with evals |
 | `frontend-engineer-subagent` | UI components, WCAG accessibility, client performance (React, Next.js) |
 | `mobile-engineer-subagent` | Flutter, iOS (Swift/SwiftUI), Android (Kotlin), biometric & offline sync |
-| `devops-engineer-subagent` | CI/CD pipelines, Docker, Kubernetes, observability |
-| `aws-infrastructure-subagent` | AWS CDK (TypeScript/Python), Lambda, DynamoDB, API Gateway, SQS |
+| `platform-engineer-subagent` | AWS CDK/serverless, non-AWS IaC, CI/CD pipelines, Docker, Kubernetes, observability |
 | `data-engineer-subagent` | ETL/ELT pipelines, Spark/Databricks, Delta Lake, warehouse schemas |
-| `ai-engineer-subagent` | LLM integration, prompt engineering, RAG, agentic tools |
 | `ui-ux-designer-subagent` | User flows, wireframes, component design specifications |
-| `business-analyst-subagent` | User stories, acceptance criteria (Gherkin/BDD), MVP scoping |
-| `growth-marketer-subagent` | Analytics taxonomies, funnel metrics, experiment design |
+| `business-analyst-subagent` | User stories, acceptance criteria (Gherkin/BDD), MVP scoping, measurement plans and experiment design |
 | `code-reviewer` | Read-only multi-dimension code review before PR |
-| `qa-subagent` | Final validation gate against specs, acceptance criteria, and test coverage |
-| `api-test-agent` | Black-box endpoint validation, stress, and security-smoke tests on running APIs |
+| `qa-subagent` | Final validation gate against specs, acceptance criteria and test coverage, plus live API smoke/perf/security/stress checks |
 | `codebase-mapper` | Parallel exploration to generate `.planning/codebase/` documentation |
 
 ---
@@ -80,7 +75,7 @@ Trust Boundary?
  │   └─ 2+ Domains ──► Coordinated Fast Path (Lightweight plan + leaf agents)
  └─ YES
      ├─ 1 Domain  ──► Full Workflow (Security gate → Tech Lead → SDD → QA)
-     └─ 2+ Domains ──► Orchestrator (Full multi-agent pipeline with gates)
+     └─ 2+ Domains ──► Orchestrator (main session runs `orchestrating-multi-domain-work` skill)
 ```
 
 ---
@@ -117,6 +112,7 @@ Configured via `hooks/hooks.json`:
 - **BDD / Cucumber**: Gherkin feature files with step definitions.
 - **Database Patterns**: CTE-first SQL, zero-downtime migrations, DynamoDB single-table design.
 - **Single Source of Truth**: Litmus tests preventing stale documentation duplication.
+- **Documentation Layout** (`references/documentation-layout.md`): one canonical project-docs structure for every agent and command — living reference docs (`docs/*.md`, system `docs/00-overview…04-ai-friendly`), per-change specs (`docs/specs/<feature>/`), ADRs (`docs/adr/`), with an explicit propose → accept → implement → promote lifecycle.
 
 ---
 
@@ -127,7 +123,7 @@ tea-sdlc/
 ├── .claude-plugin/
 │   ├── plugin.json         # Plugin manifest
 │   └── marketplace.json    # Marketplace registry manifest
-├── agents/                 # 17 subagent definitions
+├── agents/                 # 12 subagent definitions
 ├── commands/               # Slash command definitions
 ├── hooks/
 │   ├── hooks.json          # Hook lifecycle configurations

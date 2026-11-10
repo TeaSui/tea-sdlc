@@ -11,7 +11,7 @@ Fabrication is a correctness bug. Inventing a function name, file path, flag, AP
 
 **Core principle:** If you cannot cite the source, you cannot make the claim. "I don't know" is a first-class answer.
 
-**Canonical rules:** `~/.claude/rules/reduce-hallucinations.md` and `~/.claude/rules/context7.md`. Reuse inspected evidence while its checked state/scope remains valid; recheck when changes, failures or uncertainty invalidate it. Ordinary code reading does not require a documentation lookup unless an uncertain API/detail matters.
+**Canonical rules:** `${CLAUDE_PLUGIN_ROOT}/rules/reduce-hallucinations.md` and `${CLAUDE_PLUGIN_ROOT}/rules/context7.md`. Reuse inspected evidence while its checked state/scope remains valid; recheck when changes, failures or uncertainty invalidate it. Ordinary code reading does not require a documentation lookup unless an uncertain API/detail matters.
 
 ## When to Use
 
@@ -142,7 +142,7 @@ Skip any step = fabrication, not shorthand.
 - `verification-before-completion` — success claims need applicable command evidence tied to the checked state and scope. This skill covers *all* factual claims, not just success claims.
 - `systematic-debugging` — forbids fix-by-guess; this skill forbids claim-by-guess.
 - `receiving-code-review` — "verify before implementing suggestions" overlaps: if a reviewer cites an API that doesn't exist in the current library version, check applicable primary docs or installed source before changing code.
-- `rules/subagent-return-format.md` — dispatchers verify every cited evidence path by `Read`; fabricated = BLOCKED.
+- `${CLAUDE_PLUGIN_ROOT}/rules/subagent-return-format.md` — dispatchers verify every cited evidence path by `Read`; fabricated = BLOCKED.
 
 ## The Bottom Line
 

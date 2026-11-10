@@ -2,7 +2,7 @@
 """Record a completed pre-PR review for the current HEAD, read by hooks/pr-review-gate.py.
 
 Usage (from inside the repository under review):
-  python3 ~/.claude/scripts/mark-pr-review.py --reviewer code-reviewer --open-findings 0 --note "pass 1, 3 fixed"
+  python3 "${CLAUDE_PLUGIN_ROOT}/scripts/mark-pr-review.py" --reviewer code-reviewer --open-findings 0 --note "pass 1, 3 fixed"
 """
 import argparse
 import datetime

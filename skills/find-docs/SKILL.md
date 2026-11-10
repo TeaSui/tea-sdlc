@@ -5,7 +5,7 @@ description: Retrieve primary or installed documentation for uncertain or versio
 
 # Documentation Lookup
 
-Follow `~/.claude/rules/context7.md` and `~/.claude/rules/reduce-hallucinations.md`. Verify load-bearing syntax, flags, configuration and version-specific behavior against applicable primary sources. Ordinary code reading/refactoring does not require a network lookup when the relevant behavior is established by local source.
+Follow `${CLAUDE_PLUGIN_ROOT}/rules/context7.md` and `${CLAUDE_PLUGIN_ROOT}/rules/reduce-hallucinations.md`. Verify load-bearing syntax, flags, configuration and version-specific behavior against applicable primary sources. Ordinary code reading/refactoring does not require a network lookup when the relevant behavior is established by local source.
 
 ## 1. Identify the question and version
 

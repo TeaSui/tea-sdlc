@@ -46,13 +46,13 @@ The status keyword MUST appear verbatim somewhere in the return — as a heading
 - Test/build output: write to a file (`> /tmp/<slug>.log` or project-local equivalent) and cite the path. Don't paste multi-page output inline.
 - For code changes, cite file paths (not diffs). Reviewers read files.
 - For commands run, include the exact command so reviewers can reproduce.
-- For persisted strategic docs (threat models, contracts, user stories), cite the `docs/**/` path.
+- For persisted strategic docs (threat models, contracts, user stories), cite the exact path written (default `docs/specs/<feature>/…`, `docs/adr/…`).
 
 ---
 
 ## Strategic agents: persistence obligation
 
-Strategic agents (`business-analyst-subagent`, `tech-lead-subagent`, `security-engineer-subagent`) MUST persist their canonical artifacts to `docs/` per `rules/strategic-output-persistence.md` (which owns the per-agent destinations) AND cite those paths in evidence. Do not paste full contracts / threat models / user stories into the return — cite the persisted files.
+Strategic agents (`business-analyst-subagent`, `tech-lead-subagent`, `security-engineer-subagent`) MUST persist their canonical artifacts per `rules/strategic-output-persistence.md` and `references/documentation-layout.md` (which owns the per-agent destinations) AND cite those paths in evidence. Do not paste full contracts / threat models / user stories into the return — cite the persisted files.
 
 ---
 

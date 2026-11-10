@@ -2,7 +2,7 @@
 
 The most detailed document — and the one BA, PM, developers, and AI agents all rely on most heavily, because it's precise enough to implement and to generate code from with few errors. A good spec leaves almost nothing to guesswork: contracts, schemas, error handling, and test cases are all explicit.
 
-In this repo's workflow the spec is a TechLead artifact (`docs/contracts/`). It complements, rather than replaces, an OpenAPI/JSON-Schema contract — the spec is the human-readable feature definition; the contract files are the machine-validated interface.
+In this repo's workflow the spec is a TechLead artifact (`docs/specs/<feature>/design.md`; machine contract deltas in `docs/specs/<feature>/contracts/`). It complements, rather than replaces, an OpenAPI/JSON-Schema contract — the spec is the human-readable feature definition; the contract files are the machine-validated interface.
 
 ## Structure
 

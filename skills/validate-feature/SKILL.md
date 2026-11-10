@@ -7,7 +7,7 @@ description: Validate the intended pending or committed change with project-supp
 
 **Announce at start:** "Using validate-feature to check the requested change and its applicable validation gates."
 
-Follow `~/.claude/rules/workflow-routing.md` for required review/QA gates and `verification-before-completion` for evidence. This workflow does not authorize service startup, dependency installation or mutating HTTP requests.
+Follow `${CLAUDE_PLUGIN_ROOT}/rules/workflow-routing.md` for required review/QA gates and `verification-before-completion` for evidence. This workflow does not authorize service startup, dependency installation or mutating HTTP requests.
 
 ## Step 1: Identify the actual validation target
 

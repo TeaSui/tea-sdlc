@@ -7,7 +7,7 @@ description: "Implement or migrate Claude API integrations using the official SD
 
 Use the official SDK for the project's language; read the installed version and current official documentation before choosing methods. Do not replace another provider's code without an explicit migration request. Preserve existing contracts, user authorization and security rules.
 
-Start with [references/current-models.md](references/current-models.md), verified 2026-10-23, for Fable 5.1 and Opus/Sonnet/Haiku 5.5. For Code model/effort selection use `~/.claude/references/model-guide.md`; API parameters do not belong in settings.json.
+Start with [references/current-models.md](references/current-models.md), verified 2026-10-23, for Fable 5.1 and Opus/Sonnet/Haiku 5.5. For Code model/effort selection use `${CLAUDE_PLUGIN_ROOT}/references/model-guide.md`; API parameters do not belong in settings.json.
 
 ## Current reference routes
 

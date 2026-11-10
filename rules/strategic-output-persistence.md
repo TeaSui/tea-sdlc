@@ -1,14 +1,16 @@
 # Strategic Output Persistence
 
-Strategic agents persist outputs to `docs/` so they survive across sessions:
-- **TechLead:** module READMEs (primary) + `docs/contracts/` (full runs only, not (contract)-mode / "Stop after Phase 2" dispatches) — API contracts, ADRs, data models
-- **Security:** `docs/security/` — threat models, STRIDE, implementation rules
-- **BA:** `docs/requirements/` — user stories, acceptance criteria
-- **BA + TechLead (shared):** `docs/domain/` — ubiquitous-language glossary (`glossary.md`) and lightweight domain model (entities, invariants, bounded contexts). BA seeds terms during requirements; TechLead ratifies/extends during contract design. Full-workflow and orchestrator tiers only — fast paths skip it. Specs, contracts, and dispatch prompts reference these named concepts instead of restating definitions (per `rules/single-source-of-truth.md`). For greenfield work, `/new-project`'s research outputs seed the initial glossary.
+Strategic agents persist outputs so they survive across sessions. **Paths, file ownership and lifecycle are owned by `references/documentation-layout.md`** — read it before writing; this rule only adds the obligations below.
 
-Implementation agents READ these files, not regenerate. Exception: TechLead (contract)-mode dispatches ("Stop after Phase 2", no delegation) write to module READMEs only.
+- Each strategic agent writes only its own file in the feature's change-spec folder (`docs/specs/<feature>/`): BA → `requirements.md`, UI/UX → `ui-design.md`, Security → `security.md`, TechLead → `design.md` + `contracts/` (+ ADRs in `docs/adr/`, ratified terms in `glossary.md`), BA → `measurement.md` (when measurement is in scope). TechLead contract-mode ("Stop after Phase 2") changes delegation only, never storage.
+- Glossary terms: BA seeds, TechLead ratifies, in the top-scope `glossary.md`. Specs, contracts and dispatch prompts link to named terms instead of redefining them (`rules/single-source-of-truth.md`). For greenfield work, `/new-project` research seeds the glossary.
+- Reuse an existing equivalent location in the target project instead of creating a parallel tree, and return the exact path written.
+
+Implementation agents READ these files, never regenerate them. Living reference docs (`docs/*.md`) are updated from verified code via `/upgrade-service-docs`, not by strategic agents.
 
 ## Staleness check
+
+Applies to living reference docs and to change specs whose `README.md` status is `proposed` or `accepted` (see `references/documentation-layout.md` §7). Implemented or superseded specs are history: never flag or refresh them; read the living docs instead.
 
 Before an implementation agent acts on a strategic doc, it MUST run:
 
@@ -24,7 +26,7 @@ git log --oneline -- <module-path> | wc -l  # total commits on the module since 
 
 **When flagged:** the implementation agent returns `DONE_WITH_CONCERNS` (not `DONE`) and includes a staleness note:
 ```
-CONCERN: docs/contracts/foo.yaml last updated <date/SHA>; <N> commits to <module> since then.
+CONCERN: docs/specs/foo/design.md last updated <date/SHA>; <N> commits to <module> since then.
 Recommend re-running TechLead (contract-mode) before the next dispatch that touches this contract.
 ```
 

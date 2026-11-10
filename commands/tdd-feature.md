@@ -5,7 +5,7 @@ argument-hint: "<feature description>"
 
 Implement: **$ARGUMENTS**
 
-First classify the change using `~/.claude/rules/workflow-routing.md`; complete required Security/contract prerequisites before implementation. Follow `~/.claude/rules/dispatch-prompt-contract.md` and `rules/subagent-return-format.md` when dispatching. Use `test-driven-development` for behavior changes and safe recovery; prose/config-only work uses applicable structural or isolated checks. Preserve existing/user/other-agent work and reuse existing authorization.
+First classify the change using `${CLAUDE_PLUGIN_ROOT}/rules/workflow-routing.md`; complete required Security/contract prerequisites before implementation. Follow `${CLAUDE_PLUGIN_ROOT}/rules/dispatch-prompt-contract.md` and `${CLAUDE_PLUGIN_ROOT}/rules/subagent-return-format.md` when dispatching. Use `test-driven-development` for behavior changes and safe recovery; prose/config-only work uses applicable structural or isolated checks. Preserve existing/user/other-agent work and reuse existing authorization.
 
 Discover the project's installed test runner/version from instructions, manifests, lockfiles and CI scripts. Use its supported selector/help; never assume a Jest-specific flag works for every runner. Do not download dependencies or start services merely to execute this command.
 

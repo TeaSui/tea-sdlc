@@ -3,12 +3,12 @@
 **Scope:** This contract governs every `Task` dispatch made by a delegating agent — including the **main session** when it dispatches implementers (coordinated fast path leaf dispatches, and full-workflow dispatches via `subagent-driven-development`). Fast-path work does not dispatch subagents — the main session edits directly — so there is no "fast path" case for this contract to exempt. See `rules/workflow-routing.md` for when a task dispatches at all.
 
 **Delegating agents bound by this contract:**
-- `agent-orchestrator` (Phase 4: DELEGATE)
+- **main session running `skills/orchestrating-multi-domain-work`** (Phase 4: DELEGATE)
 - `tech-lead-subagent` (Phase 3: DELEGATE — full mode only; `(contract)` / "Stop after Phase 2" dispatches do not delegate)
 - `business-analyst-subagent` (Phase 4: DELEGATE — standalone mode only; orchestrator-dispatched BA MUST NOT re-dispatch)
 - **main session** (coordinated fast path: direct leaf dispatches; full workflow: implementer dispatches after TechLead contract-mode, per `rules/workflow-routing.md`)
 
-**Leaf subagents (backend, frontend, mobile, devops, data, AI, AWS, UI/UX, security, QA, api-test, code-reviewer) are consumers:** they read this shape on input and return per `rules/subagent-return-format.md` on output. They do not dispatch.
+**Leaf subagents (backend, frontend, mobile, platform, data, UI/UX, security, QA, code-reviewer, codebase-mapper) are consumers:** they read this shape on input and return per `rules/subagent-return-format.md` on output. They do not dispatch.
 
 **Detection signal:** a subagent knows it received a contract dispatch because its prompt contains a `<return_format>` tag referencing `rules/subagent-return-format.md`. If that tag is absent, the subagent responds in whatever shape fits the prompt.
 
@@ -39,7 +39,7 @@ Every **implementation dispatch** prompt MUST contain the following sections, in
 
 **Review / advisory dispatches** (spec review, code-quality review, QA, threat-model, requirements) use a lighter minimum: `role`, `context`, `task`, and `return_format`. Add `inputs`/`exit_criteria`/`out_of_scope` only when they carry real content — a review has no file-mutation scope to fence.
 
-**Model-aware dispatch:** use `~/.claude/references/model-guide.md` for current models and effort. State the outcome, scope, ownership, constraints and observable acceptance evidence. Non-fork subagents do not inherit the parent conversation or its previously invoked skills. Custom subagents normally receive CLAUDE.md and configured preload skills; built-in agents, forks, `omitClaudeMd`, and host settings can differ. Include task-specific context explicitly without copying global rules.
+**Model-aware dispatch:** use `references/model-guide.md` for current models and effort. State the outcome, scope, ownership, constraints and observable acceptance evidence. Non-fork subagents do not inherit the parent conversation or its previously invoked skills. Custom subagents normally receive CLAUDE.md and configured preload skills; built-in agents, forks, `omitClaudeMd`, and host settings can differ. Include task-specific context explicitly without copying global rules.
 
 ```xml
 <role>
@@ -59,10 +59,11 @@ Trim verbose upstream tool output to the relevant fields before pasting it in.
 
 <inputs>
   <file path="..."/>                    <!-- Every file the subagent may read or modify -->
-  <contract ref="docs/contracts/..."/>  <!-- Optional; include when TechLead contract applies -->
-  <security_rules ref="docs/security/..."/>  <!-- Optional; verbatim or by reference when trust-boundary -->
-  <requirements ref="docs/requirements/..."/> <!-- Optional; BA stories -->
-  <domain_model ref="docs/domain/..."/>       <!-- Optional; glossary/domain model — use its terms verbatim, do not redefine them -->
+  <!-- Paths below follow references/documentation-layout.md; reuse the project's existing equivalents when they exist -->
+  <contract ref="docs/specs/<feature>/contracts/... | docs/specs/<feature>/design.md"/>  <!-- Optional; include when TechLead contract applies -->
+  <security_rules ref="docs/specs/<feature>/security.md"/>  <!-- Optional; verbatim or by reference when trust-boundary -->
+  <requirements ref="docs/specs/<feature>/requirements.md"/> <!-- Optional; BA stories -->
+  <domain_model ref="glossary.md"/>       <!-- Optional; glossary/domain model — use its terms verbatim, do not redefine them -->
 </inputs>
 <!--
   Dispatcher obligation (anti-fabrication): before issuing the Task call, the
@@ -166,28 +167,28 @@ Hard limits (see `rules/review-loop-limits.md`): max 2 fix rounds per issue cate
 <role>You are the backend-engineer-subagent implementing the /login endpoint per the TechLead contract and Security rules.</role>
 
 <context>
-Parent: agent-orchestrator. Upstream: Security produced AUTH-01..AUTH-07 rules (docs/security/auth-login.md); TechLead produced the OpenAPI contract (docs/contracts/auth-login.yaml). You are dispatched in parallel with frontend-engineer-subagent, which consumes the same contract.
+Parent: main session (orchestrating-multi-domain-work). Upstream: Security produced AUTH-01..AUTH-07 rules (docs/specs/auth-login/security.md); TechLead produced the accepted OpenAPI contract (docs/specs/auth-login/contracts/auth-login.yaml) and design (docs/specs/auth-login/design.md). You are dispatched in parallel with frontend-engineer-subagent, which consumes the same contract.
 </context>
 
 <inputs>
   <file path="pkg/auth/login.go"/>
   <file path="pkg/auth/login_test.go"/>
   <file path="cmd/server/routes.go"/>
-  <contract ref="docs/contracts/auth-login.yaml"/>
-  <security_rules ref="docs/security/auth-login.md"/>
+  <contract ref="docs/specs/auth-login/contracts/auth-login.yaml"/>
+  <security_rules ref="docs/specs/auth-login/security.md"/>
 </inputs>
 
 <task>Implement POST /login per the OpenAPI contract. Validate inputs per Security rules AUTH-01..AUTH-04. Issue JWT per AUTH-05..AUTH-07. Write table-driven tests covering success, invalid password, locked account, and expired-token refresh.</task>
 
 <exit_criteria>
 - `go test ./pkg/auth/...` passes with ≥80% coverage
-- `redocly lint docs/contracts/auth-login.yaml` clean
+- `redocly lint api/openapi.yaml` clean after applying the contract delta from docs/specs/auth-login/contracts/auth-login.yaml
 - `golangci-lint run ./pkg/auth/...` clean
 - Contract examples in the OpenAPI file pass integration test against the handler
 </exit_criteria>
 
 <out_of_scope>
-- Do NOT modify docs/contracts/auth-login.yaml (TechLead owns it)
+- Do NOT change docs/specs/auth-login/contracts/auth-login.yaml (TechLead owns it); apply it to api/openapi.yaml without semantic changes
 - Do NOT change database migrations
 - Do NOT touch the frontend
 </out_of_scope>

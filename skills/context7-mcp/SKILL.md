@@ -3,7 +3,7 @@ name: context7-mcp
 description: Use for uncertain or version-sensitive library, framework and API details; prefer configured Context7 when available and accept relevant primary/local sources
 ---
 
-Follow `~/.claude/rules/context7.md`: prefer the configured Context7 tools when available for version-sensitive details. Current official docs, installed help and local source are valid alternatives when they answer the question or Context7 is unavailable. Do not require a redundant network call for ordinary code reading or reuse of valid inspected evidence.
+Follow `${CLAUDE_PLUGIN_ROOT}/rules/context7.md`: prefer the configured Context7 tools when available for version-sensitive details. Current official docs, installed help and local source are valid alternatives when they answer the question or Context7 is unavailable. Do not require a redundant network call for ordinary code reading or reuse of valid inspected evidence.
 
 ## When to Use This Skill
 

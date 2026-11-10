@@ -2,7 +2,7 @@
 
 The most common requirement format in Agile. A story names *who*, *what*, and *why*; the acceptance criteria make "done" observable so QA can test it and a developer knows when to stop.
 
-Note: in this repo's workflow, user stories are the `business-analyst-subagent`'s canonical artifact and persist to `docs/requirements/`. Use this structure whether you're the BA agent or the main session.
+Note: in this repo's workflow, user stories are the `business-analyst-subagent`'s canonical artifact and persist to `docs/specs/<feature>/requirements.md` (`references/documentation-layout.md`). Use this structure whether you're the BA agent or the main session.
 
 ## Story structure
 

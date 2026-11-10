@@ -85,7 +85,7 @@ When agents return:
 
 ## Agent Prompt Structure
 
-Prompt shape is owned by `~/.claude/rules/dispatch-prompt-contract.md`: implementation dispatches carry the nine contract fields (markdown headings or XML — content, not serialization, is the contract); investigation/review dispatches use the lighter role+context+task+return_format minimum. Style the content for the resolved model per `references/model-routing.md` → Model-Specific Steering.
+Prompt shape is owned by `${CLAUDE_PLUGIN_ROOT}/rules/dispatch-prompt-contract.md`: implementation dispatches carry the nine contract fields (markdown headings or XML — content, not serialization, is the contract); investigation/review dispatches use the lighter role+context+task+return_format minimum. Style the content for the resolved model per `references/model-routing.md` → Model-Specific Steering.
 
 Good agent prompts are:
 1. **Focused** - One clear problem domain

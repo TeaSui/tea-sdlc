@@ -202,7 +202,7 @@ You MUST complete each phase before proceeding to the next.
 4. **If Fix Doesn't Work**
    - STOP
    - Count: How many fixes have you tried?
-   - Follow any applicable formal bound in `~/.claude/rules/review-loop-limits.md` first; this heuristic does not extend it
+   - Follow any applicable formal bound in `${CLAUDE_PLUGIN_ROOT}/rules/review-loop-limits.md` first; this heuristic does not extend it
    - Below that bound, return to Phase 1 and re-analyze with new information
    - **At 3 failed exploratory hypotheses (or earlier if the formal bound is reached): stop and reassess the approach (step 5 below)**
    - DON'T attempt Fix #4 without architectural discussion

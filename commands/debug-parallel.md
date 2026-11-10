@@ -5,7 +5,7 @@ argument-hint: "<error description>"
 
 Error: **$ARGUMENTS**
 
-Classify the task using `~/.claude/rules/workflow-routing.md`; complete required Security/contract prerequisites before implementing. Follow `~/.claude/rules/dispatch-prompt-contract.md` and `rules/subagent-return-format.md`. Dispatch only useful independent branches using the available Agent tool (`Task` alias is supported); keep dependent investigation sequential. When agents are unavailable, report the missing independent gate and use an authorized local fallback.
+Classify the task using `${CLAUDE_PLUGIN_ROOT}/rules/workflow-routing.md`; complete required Security/contract prerequisites before implementing. Follow `${CLAUDE_PLUGIN_ROOT}/rules/dispatch-prompt-contract.md` and `${CLAUDE_PLUGIN_ROOT}/rules/subagent-return-format.md`. Dispatch only useful independent branches using the available Agent tool (`Task` alias is supported); keep dependent investigation sequential. When agents are unavailable, report the missing independent gate and use an authorized local fallback.
 
 All reports disclose presence, counts, safe identifiers, filenames or explicitly redacted metadata only. Never print credentials, environment/config values, raw auth headers, connection strings, PII or request/response bodies. Diagnostics must stay within the authorized safe target; do not start services or replay mutating requests by default.
 

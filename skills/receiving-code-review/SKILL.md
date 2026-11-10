@@ -46,7 +46,7 @@ IF an item is unclear:
   Continue understood, authorized fixes that are demonstrably independent
 
 WHY: Dependencies determine what must wait; one unclear item does not block unrelated work.
-Reuse existing authorization per rules/session-scope.md and rules/workflow-routing.md.
+Reuse existing authorization per ${CLAUDE_PLUGIN_ROOT}/rules/session-scope.md and ${CLAUDE_PLUGIN_ROOT}/rules/workflow-routing.md.
 ```
 
 **Example:**

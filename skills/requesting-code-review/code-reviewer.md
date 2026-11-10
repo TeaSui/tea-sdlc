@@ -105,7 +105,7 @@ Read cited check evidence and distinguish actual PASS/FAIL from skipped, unsuppo
 - Be specific (file:line, not vague)
 - Explain WHY issues matter
 - Acknowledge strengths
-- Give clear scoped verdict and the status/evidence/exit-criteria return required by `~/.claude/rules/subagent-return-format.md`
+- Give clear scoped verdict and the status/evidence/exit-criteria return required by `rules/subagent-return-format.md`
 
 **DON'T:**
 - Say "looks good" without checking

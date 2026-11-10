@@ -4,7 +4,7 @@ Use this template when dispatching a spec compliance reviewer subagent.
 
 **Purpose:** Verify implementer built what was requested (nothing more, nothing less)
 
-Choose model/effort using `~/.claude/references/model-guide.md`. Every reviewer receives the
+Choose model/effort using `references/model-guide.md`. Every reviewer receives the
 actual requirements, owned review scope and applicable evidence. Use the available Agent tool
 (`Task` alias supported); no model label substitutes for independent inspection.
 
@@ -71,7 +71,7 @@ Task tool (general-purpose or code-reviewer):
     minor. Do not filter for importance or confidence — the dispatcher filters downstream.
     Include a confidence level per finding.
 
-    Report per `~/.claude/rules/subagent-return-format.md` (any shape — prose, markdown, or XML):
+    Report per `rules/subagent-return-format.md` (any shape — prose, markdown, or XML):
     - Status DONE when everything matches after code inspection (spec compliant)
     - Status BLOCKED with the list of missing/extra items (file:line references) when issues are found
     - Always include a 1–3 sentence summary, actual reviewed scope/state, evidence paths and

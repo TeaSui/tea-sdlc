@@ -5,14 +5,14 @@ description: Evaluate and upgrade Claude Code assets (agents, commands, rules, s
 
 # /eval-upgrade — Evaluate & upgrade Claude Code assets
 
-Tool location: `/Users/tungnguyen/TYME/Tools/Claude/eval-upgrade` (canonical docs: its `README.md` — read it for checks, scoring formula, arena rules, API, and security model; do not restate it here).
+Tool location: the external eval-upgrade tool at `$EVAL_UPGRADE_HOME` (not bundled with this plugin; if the variable is unset or the directory is missing, report NEEDS_CONTEXT and stop) (canonical docs: its `README.md` — read it for checks, scoring formula, arena rules, API, and security model; do not restate it here).
 
 When this command is invoked, run the matching mode below via Bash from the tool directory and report the output. Hooks are out of scope by design (executable code).
 
 ## Modes
 
 ```bash
-cd /Users/tungnguyen/TYME/Tools/Claude/eval-upgrade
+cd "$EVAL_UPGRADE_HOME"
 
 # Evaluate (default mode when the user gives no subcommand)
 node bin/run.mjs [--target <dir>] [--types agents,commands,rules,skills] [--llm] [--json]

@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "tea-sdlc",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Comprehensive Software Development Life Cycle (SDLC) framework for Claude Code with specialized multi-tier subagents, skills, commands, rules, quality gates, and automated security reviews.",
   "author": {
     "name": "Tea Nguyen",

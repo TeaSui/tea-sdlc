@@ -26,11 +26,13 @@ When escalating, report: what you tried, errors seen, root cause guess, what wou
 
 ## Project Context
 
+**Path convention:** in tea-sdlc files, paths beginning `rules/`, `references/`, `skills/` or `templates/` are relative to the tea-sdlc plugin root (the parent directory of this `references/` folder), never to the target project or `~/.claude/`. Project paths such as `docs/…` are relative to the target project.
+
 Follow the target project's documented stack, architecture, environment, security constraints and output locations, within the dispatch's owned scope. Treat personal stack and region choices in agent definitions as defaults only when the project leaves the choice open; do not migrate an established stack as part of unrelated work.
 
 ## Factual Grounding
 
-Follow `~/.claude/rules/reduce-hallucinations.md`: never invent file paths, function names, CLI flags, library APIs, or commit SHAs. Every load-bearing claim must cite a source you verified this session (`path:line`, command output, or context7 doc) — otherwise say "I don't know". Evidence paths in your return must exist; fabricated paths are treated as BLOCKED by the dispatcher.
+Follow `rules/reduce-hallucinations.md`: never invent file paths, function names, CLI flags, library APIs, or commit SHAs. Every load-bearing claim must cite a source you verified this session (`path:line`, command output, or context7 doc) — otherwise say "I don't know". Evidence paths in your return must exist; fabricated paths are treated as BLOCKED by the dispatcher.
 
 ## Conditional Agent Memory
 

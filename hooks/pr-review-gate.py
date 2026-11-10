@@ -13,6 +13,7 @@ import sys
 
 PR_CREATE = re.compile(r'(^|[;&|\s])gh\s+pr\s+create\b')
 STATE_ROOT = pathlib.Path.home() / '.claude' / 'state' / 'pr-review'
+PLUGIN_ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 
 def deny(reason):
@@ -47,7 +48,8 @@ def main():
     marker = STATE_ROOT / repo_id / f'{sha}.json'
     if not marker.is_file():
         deny(f'pr-review-gate: no pre-PR review recorded for HEAD {sha[:12]}. '
-             'Run rules/pre-pr-review.md, record it with scripts/mark-pr-review.py, then retry.')
+             f'Run {PLUGIN_ROOT}/rules/pre-pr-review.md, record it with '
+             f'python3 "{PLUGIN_ROOT}/scripts/mark-pr-review.py", then retry.')
 
     try:
         record = json.loads(marker.read_text())

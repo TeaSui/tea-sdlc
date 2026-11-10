@@ -1,8 +1,8 @@
 # AI Integration Rules
 
 ## Model Selection
-- Current selection policy: `~/.claude/references/model-guide.md`; current API details: `~/.claude/skills/building-with-the-claude-api/references/current-models.md`.
-- Start an unspecified substantial workload with Opus 5.5 at medium effort. Use Sonnet 5.5 for clear bounded implementation, Haiku 5.5 for measured mechanical/volume tasks, Fable 5.1 for difficult reasoning and long autonomous work.
+- Current selection policy: `references/model-guide.md`; current API details: `skills/building-with-the-claude-api/references/current-models.md`.
+- Start an unspecified substantial workload with Opus 5.5 at medium effort. Use Sonnet 5.5 for clear bounded implementation, Haiku 5.5 for measured mechanical/volume tasks, Fable (current version in `references/model-guide.md`) for difficult reasoning and long autonomous work.
 - Validate quality, latency and cost on representative cases; keep a concise rationale where a choice is non-obvious. Do not impose historical model/effort defaults on current tasks.
 
 ## Prompt Engineering Standards
@@ -45,7 +45,7 @@ Return JSON with fields: category, risk_level, confidence.
 
 ## Adaptive Reasoning
 - Current models use adaptive reasoning. Control depth with documented effort; fixed thinking budgets are rejected on the current family.
-- Fable 5.1/Opus 5.5 cannot turn thinking off. Use lower effort for mechanical work where quality holds, instead of adding prose that asks the model not to think.
+- Current Fable and Opus models cannot turn thinking off. Use lower effort for mechanical work where quality holds, instead of adding prose that asks the model not to think.
 - Keep request output budgets adequate for thinking plus response. Re-baseline quality/cost when changing models rather than copying prior-generation tuning.
 
 ## Prompt Caching

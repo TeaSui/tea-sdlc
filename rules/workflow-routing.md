@@ -38,11 +38,11 @@ Multi-domain, no trust boundary (e.g., cross-service refactor, shared-schema ren
 - Integration-check before merge: run the smoke test at the integration point; do not skip because each side passed in isolation.
 
 ### Full workflow (single-domain trust boundary)
-scope/design clarification → coordination outline → Security subagent → **TechLead (contract-mode) if architecture or API contract work is needed** → implementation plan → `subagent-driven-development` → QA, plus API Test in parallel when a service is running.
+scope/design clarification → coordination outline → Security subagent → **TechLead (contract-mode) if architecture or API contract work is needed** → implementation plan → `subagent-driven-development` → QA (with live API validation when a service is running) → after GO/merge, `/upgrade-service-docs` promotes the spec into living docs.
 TechLead is optional for this tier — skip when the change has no new contract surface (e.g., tightening validation on an existing endpoint). When invoked here, TechLead runs in contract-mode ("Stop after Phase 2"); it does NOT delegate — the main session dispatches implementers using custom agent definitions as context.
 
 ### Orchestrator (multi-domain trust boundary)
-Orchestrator sequences: **scope/design clarification (or BA) → coordination outline → Security → TechLead (contract-mode) → implementation plan → implementation → QA, plus API Test in parallel when a service is running.**
+The main session runs the `orchestrating-multi-domain-work` skill and sequences: **scope/design clarification (or BA) → coordination outline → Security → TechLead (contract-mode) → implementation plan → implementation → code review → QA (with live API validation when a service is running) → after GO/merge, `/upgrade-service-docs`.**
 Runtime dependency resolution. Parallel when safe. TechLead runs in contract-mode only; the orchestrator (not TechLead) dispatches implementers.
 
 ## Mid-execution domain expansion
@@ -61,7 +61,7 @@ A trust-boundary change may use the tier **one step lighter** if ALL of the foll
 1. Diff is ≤ 30 lines of production code across ≤ 3 files (test code excluded).
 2. No new endpoint, no new external surface, no new dependency, no schema/migration change.
 3. The trust-boundary trigger is a touch, not a new decision (e.g., renaming a field already classified as PII, not introducing a new PII field).
-4. An existing Security rule or threat model already covers the touched code path (cite the `docs/security/` path).
+4. An existing Security rule or threat model already covers the touched code path (cite the resolved Security artifact path, default `docs/specs/<feature>/security.md` per `references/documentation-layout.md`).
 
 With all four true: full workflow → fast path with TDD; orchestrator → coordinated fast path. Document the decision in the commit message: "Escape hatch applied: <cite rule>". If any condition fails, use the full tier.
 

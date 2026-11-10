@@ -35,6 +35,8 @@ try:
             payload['hookSpecificOutput']['additionalContext'] = '[TRUNCATED: bootstrap omitted in full. Load session-bootstrap via Skill if needed.]'
         else:
             text = content.decode('utf-8')
+            # Hook-injected text is not substituted by Claude Code; resolve the plugin root here.
+            text = text.replace('${CLAUDE_PLUGIN_ROOT}', str(root))
             payload['hookSpecificOutput']['additionalContext'] = '<session-bootstrap>\n' + text + '\n</session-bootstrap>'
 except (OSError, UnicodeError):
     omit('session-bootstrap could not be read as UTF-8')

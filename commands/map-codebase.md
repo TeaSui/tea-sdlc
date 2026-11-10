@@ -67,7 +67,7 @@ Pass the resolved `MAP_OUTPUT_DIR` to every mapper. Preserve other files and edi
 
 ### 3. Spawn 4 parallel mapper agents
 
-**Dispatch the independent useful mapper branches concurrently** using the available Agent tool (`Task` alias supported), with `subagent_type="codebase-mapper"`. For Update, dispatch only selected owners. Follow `~/.claude/rules/dispatch-prompt-contract.md` and `rules/subagent-return-format.md`; include output ownership, safe diagnostics and a confirmation/evidence contract. If independent agents are unavailable, report the limitation and use an authorized local fallback without claiming independent review.
+**Dispatch the independent useful mapper branches concurrently** using the available Agent tool (`Task` alias supported), with `subagent_type="codebase-mapper"`. For Update, dispatch only selected owners. Follow `${CLAUDE_PLUGIN_ROOT}/rules/dispatch-prompt-contract.md` and `${CLAUDE_PLUGIN_ROOT}/rules/subagent-return-format.md`; include output ownership, safe diagnostics and a confirmation/evidence contract. If independent agents are unavailable, report the limitation and use an authorized local fallback without claiming independent review.
 
 Expand the user-supplied focus hint (if any) into a single line: `Focus hint: $ARGUMENTS`. Otherwise omit that line.
 
@@ -84,8 +84,8 @@ prompt: |
   - INTEGRATIONS.md — external APIs, databases, auth, webhooks, deployment
 
   Use the templates at:
-  - ~/.claude/planning-templates/codebase/stack.md
-  - ~/.claude/planning-templates/codebase/integrations.md
+  - ${CLAUDE_PLUGIN_ROOT}/templates/planning/codebase/stack.md
+  - ${CLAUDE_PLUGIN_ROOT}/templates/planning/codebase/integrations.md
 
   Date: <TODAY>
   <optional: Focus hint: ...>
@@ -106,8 +106,8 @@ prompt: |
   - STRUCTURE.md    — directory layout, key locations, naming, where to add code
 
   Use the templates at:
-  - ~/.claude/planning-templates/codebase/architecture.md
-  - ~/.claude/planning-templates/codebase/structure.md
+  - ${CLAUDE_PLUGIN_ROOT}/templates/planning/codebase/architecture.md
+  - ${CLAUDE_PLUGIN_ROOT}/templates/planning/codebase/structure.md
 
   Date: <TODAY>
   <optional: Focus hint: ...>
@@ -128,8 +128,8 @@ prompt: |
   - TESTING.md     — framework, file organization, mocking, fixtures, coverage
 
   Use the templates at:
-  - ~/.claude/planning-templates/codebase/conventions.md
-  - ~/.claude/planning-templates/codebase/testing.md
+  - ${CLAUDE_PLUGIN_ROOT}/templates/planning/codebase/conventions.md
+  - ${CLAUDE_PLUGIN_ROOT}/templates/planning/codebase/testing.md
 
   Date: <TODAY>
   <optional: Focus hint: ...>
@@ -149,7 +149,7 @@ prompt: |
   - CONCERNS.md — tech debt, bugs, security, performance, fragile areas, coverage gaps
 
   Use the template at:
-  - ~/.claude/planning-templates/codebase/concerns.md
+  - ${CLAUDE_PLUGIN_ROOT}/templates/planning/codebase/concerns.md
 
   Date: <TODAY>
   <optional: Focus hint: ...>

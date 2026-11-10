@@ -1,6 +1,6 @@
 # Model routing for dispatches
 
-The current canonical policy is `~/.claude/references/model-guide.md`. Read it when choosing a model or effort level; this file is a compatibility pointer for existing agent references.
+The current canonical policy is `references/model-guide.md`. Read it when choosing a model or effort level; this file is a compatibility pointer for existing agent references.
 
 ## Model-Specific Steering
 

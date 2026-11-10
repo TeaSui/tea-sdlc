@@ -19,7 +19,7 @@ Claiming work is complete without verification is dishonesty, not efficiency.
 NO COMPLETION CLAIMS WITHOUT APPLICABLE VERIFICATION EVIDENCE
 ```
 
-Tie evidence to the exact checked state and scope: commit/base or pending-file manifest, command, result and relevant environment/tool version. Reuse earlier inspected results when that state/scope is unchanged and no failure or uncertainty invalidates them, per `~/.claude/rules/reduce-hallucinations.md`. Rerun after relevant edits, dependency/config changes or new failures, or when the user explicitly asks for a fresh challenge such as `/prove-it`.
+Tie evidence to the exact checked state and scope: commit/base or pending-file manifest, command, result and relevant environment/tool version. Reuse earlier inspected results when that state/scope is unchanged and no failure or uncertainty invalidates them, per `${CLAUDE_PLUGIN_ROOT}/rules/reduce-hallucinations.md`. Rerun after relevant edits, dependency/config changes or new failures, or when the user explicitly asks for a fresh challenge such as `/prove-it`.
 
 ## The Gate Function
 

@@ -2,11 +2,11 @@
 
 Use this template when dispatching an implementer subagent.
 
-Dispatch to the **domain leaf agent** from the registry in `~/.claude/rules/agents.md`
+Dispatch to the **domain leaf agent** from the registry in `rules/agents.md`
 (backend-engineer-subagent, frontend-engineer-subagent, mobile-engineer-subagent, etc. — pick by the
 task's stack); fall back to `general-purpose` only when no domain agent fits. This template satisfies
 `rules/dispatch-prompt-contract.md` via markdown headings (fields, not tags, are the contract). It is
-adapted to the selected model/effort using `~/.claude/references/model-guide.md`. Enumerate owned
+adapted to the selected model/effort using `references/model-guide.md`. Enumerate owned
 files/modules, prerequisites and exit criteria clearly for every model. Keep task/security constraints
 and evidence requirements regardless of model choice; do not assume a model performs an omitted
 review automatically. Use the available Agent tool (`Task` alias is supported).
@@ -116,7 +116,7 @@ Task tool (domain leaf agent per rules/agents.md):
 
     ## Report Format
 
-    Your return must include three things per `~/.claude/rules/subagent-return-format.md`
+    Your return must include three things per `rules/subagent-return-format.md`
     (prose, markdown, or XML — shape is flexible; the information is what matters):
     1. A status keyword, verbatim: DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
     2. Evidence paths — files changed, test-output logs the dispatcher can Read

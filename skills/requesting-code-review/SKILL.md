@@ -13,7 +13,7 @@ Dispatch code-reviewer subagent to catch issues before they cascade. The reviewe
 
 **Required when the routing tier/accepted plan calls for independent review:**
 - Substantial implementation, trust-boundary changes and formal pre-merge gates
-- Respect `~/.claude/rules/workflow-routing.md`; a fast-path fix uses appropriate local verification without mandatory subagent ceremony.
+- Respect `${CLAUDE_PLUGIN_ROOT}/rules/workflow-routing.md`; a fast-path fix uses appropriate local verification without mandatory subagent ceremony.
 
 **Optional but valuable:**
 - When stuck (fresh perspective)
@@ -39,7 +39,7 @@ Deduplicate with a NUL-aware collector and pass paths as arguments, never interp
 
 **2. Dispatch code-reviewer subagent:**
 
-Use the available Agent tool (`Task` alias supported) with code-reviewer type and the template at `~/.claude/skills/requesting-code-review/code-reviewer.md`. Choose model/effort from `~/.claude/references/model-guide.md`.
+Use the available Agent tool (`Task` alias supported) with code-reviewer type and the template at `${CLAUDE_PLUGIN_ROOT}/skills/requesting-code-review/code-reviewer.md`. Choose model/effort from `${CLAUDE_PLUGIN_ROOT}/references/model-guide.md`.
 
 **Placeholders:**
 - `{WHAT_WAS_IMPLEMENTED}` - What you just built
@@ -67,7 +67,7 @@ You: Let me request code review before proceeding.
 
 [Dispatch code-reviewer subagent]
   WHAT_WAS_IMPLEMENTED: Verification and repair functions for conversation index
-  PLAN_OR_REQUIREMENTS: Task 2 from docs/plans/deployment-plan.md
+  PLAN_OR_REQUIREMENTS: Task 2 from docs/specs/deployment/plan.md
   REVIEW_SCOPE: pending Git work; owned verification/repair files and tests;
                 baseline and content hashes in the supplied review manifest
   DESCRIPTION: Added verifyIndex() and repairIndex() with 4 issue types
@@ -111,4 +111,4 @@ You: [Fix progress indicators]
 - Show code/tests that prove it works
 - Request clarification
 
-See template at: `~/.claude/skills/requesting-code-review/code-reviewer.md`. Review results must name the checked state/scope and contain status, existing evidence paths and exit-criteria checks per `rules/subagent-return-format.md`. A changed file after review invalidates only the affected scope; recheck it before carrying the verdict forward.
+See template at: `${CLAUDE_PLUGIN_ROOT}/skills/requesting-code-review/code-reviewer.md`. Review results must name the checked state/scope and contain status, existing evidence paths and exit-criteria checks per `${CLAUDE_PLUGIN_ROOT}/rules/subagent-return-format.md`. A changed file after review invalidates only the affected scope; recheck it before carrying the verdict forward.
