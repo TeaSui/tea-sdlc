@@ -125,7 +125,7 @@ Existing projects keep their established locations; the layout file maps legacy 
 | `/tdd-feature` | Failing tests first, implement to green, full-suite regression check |
 | `/debug-parallel` | Parallel config, diagnostics, code-path and history investigation for multi-service errors |
 | `/prove-it` | List every completion claim and run the command that proves each one |
-| `/prompt-builder` | Design a Claude prompt from a description |
+| `/prompt-builder` | Design a Claude prompt from a description; software changes follow spec → adr → tdd → implement → test → PR |
 | `/eval-upgrade` | Score and A/B-duel Claude Code assets; requires the external tool at `$EVAL_UPGRADE_HOME` |
 
 ---

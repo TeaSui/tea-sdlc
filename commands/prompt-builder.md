@@ -1,5 +1,5 @@
 ---
-description: Generate an optimal Claude prompt structure from a user description. Asks clarifying questions when details are missing, then outputs a minimal or full XML-structured prompt.
+description: Generate an optimal Claude prompt from a user description. Software-change requests get a prompt that follows the tea-sdlc flow (spec → adr → tdd → implement → test → create PR); other tasks get a minimal or full XML-structured prompt. Asks clarifying questions when details are missing.
 argument-hint: "[description of what you want the prompt to do]"
 ---
 
@@ -7,7 +7,10 @@ argument-hint: "[description of what you want the prompt to do]"
 
 ## Objective
 
-Turn a natural-language description of a task into a well-structured Claude prompt. Choose between **minimal** and **full** versions based on complexity. Ask for missing details before generating.
+Turn a natural-language description of a task into a well-structured Claude prompt. Ask for missing details before generating.
+
+- **Software change** (build, add, modify, fix or refactor code): generate an **SDLC-flow prompt** that makes the executing session follow `spec → adr → tdd → implement → test → create PR`, in that order, with a gate between stages.
+- **Anything else** (classification, extraction, writing, analysis): choose between **minimal** and **full** based on complexity.
 
 ## Arguments
 
@@ -29,6 +32,12 @@ Extract what you can from `$ARGUMENTS`:
 | **Constraints** | Tone, length, rules, things to avoid |
 | **Examples** | Any sample input/output pairs mentioned |
 
+### 1b. Pick the track
+
+Software change → **SDLC-flow track** (§4a). Otherwise → minimal/full track (§3, §4b). If the user explicitly asks for a generic prompt for a dev task, honor it.
+
+For the SDLC-flow track also extract: **service/repo**, **feature slug** (stable kebab-case, one change — `auth-login-mfa`, no numbers/dates/`-v2`), **acceptance criteria**, **trust boundary** (any item in `${CLAUDE_PLUGIN_ROOT}/rules/workflow-routing.md` → treat as YES when unsure), **domain count**, and whether a **contract/API/schema** changes. The tier (fast path / coordinated / full workflow / orchestrator) decides how heavy each stage is; never skip a stage, shrink it.
+
 ### 2. Decide: enough info?
 
 **Enough info** means you can write a concrete `<role>`, a concrete `<task>`, and at least one `<constraints>` bullet. If any of these are completely missing or vague, ask.
@@ -40,7 +49,7 @@ Examples of targeted questions:
 - "Who is the role here — a customer support agent, a code reviewer, a data analyst?"
 - "Will the prompt receive a long document, or just a short user query?"
 
-### 3. Choose version
+### 3. Choose version (minimal/full track only)
 
 Use **Full** when ANY of these apply:
 - Prompt will receive documents or long variable content (>~500 tokens)
@@ -53,7 +62,77 @@ Use **Minimal** otherwise (simple one-step tasks, short inputs, free-text output
 
 If the user explicitly requests a version, honor it.
 
-### 4. Generate the prompt
+### 4a. SDLC-flow prompt (software changes)
+
+Generate this prompt. Fill every `[...]` from the parsed input; leave `[TODO: ...]` + flag when unknown. Artifact paths follow `${CLAUDE_PLUGIN_ROOT}/references/documentation-layout.md`.
+
+```xml
+<role>
+You are a senior engineer on [service/repo], working through the tea-sdlc flow. You deliver one change end to end and never skip a stage; you may shrink one to match the change's tier.
+</role>
+
+<task>
+[One imperative sentence: the change to deliver.]
+</task>
+
+<context>
+- Service/repo: [name, path]
+- Feature slug: [kebab-case]
+- Acceptance criteria: [list, or "derive from the description and confirm in stage 1"]
+- Tier: [fast path | coordinated fast path | full workflow | orchestrator] — [why, citing the trust-boundary items hit]
+- Contract/schema change: [yes — what | no]
+</context>
+
+<workflow>
+Execute in order. Finish a stage and meet its gate before starting the next. Report the stage you are in.
+
+1. SPEC — define what changes and why.
+   - Full workflow / orchestrator: write `docs/specs/[slug]/` (`requirements.md` with US/AC/BR ids, `security.md` for trust boundaries, `design.md` + `contracts/` for contract changes) and `README.md` with `status: proposed`.
+   - Fast path: state the approach and acceptance criteria in 2–3 lines; no spec folder.
+   - Gate: user approves the spec (set `status: accepted`, `accepted_by`). Do not continue on a `proposed` spec unless told to.
+
+2. ADR — record decisions that outlive the change.
+   - For each significant decision (architecture, data model, new dependency, API style, security posture), write `docs/adr/NNNN-<decision>.md` (context, options, decision, consequences) and link it from the spec's `design.md`.
+   - If no such decision exists, write one line: "No ADR needed: [reason]". Never rewrite an accepted ADR; supersede it with a new one.
+   - Gate: every decision the spec depends on has an ADR or an explicit "no ADR needed".
+
+3. TDD — write failing tests first.
+   - Read 2–3 existing tests for conventions. Write tests for happy path, edge cases and error conditions from the acceptance criteria, not from the implementation.
+   - Run them with the project's own test runner; they MUST fail for the expected reason. Show the failing output.
+   - Gate: failing tests exist and fail correctly.
+
+4. IMPLEMENT — minimum code to go green.
+   - Apply the accepted `contracts/` delta to the project's authoritative contract source. Do not add untested behavior or weaken assertions.
+   - Contradictions with the spec are reported, not silently fixed in the spec.
+   - Gate: the new tests pass.
+
+5. TEST — prove it.
+   - Run the full suite (and build, lint, live API validation if a service is running). Fix regressions.
+   - Fast path: single pre-PR pass per `${CLAUDE_PLUGIN_ROOT}/rules/pre-pr-review.md`. Higher tiers: code review and QA `GO`.
+   - Gate: all checks green with evidence; skipped or unavailable checks are stated explicitly.
+
+6. CREATE PR — hand off.
+   - Branch from the default branch, commit in logical steps, open the PR. The description links the spec and ADRs, lists the acceptance criteria with evidence, and notes risks and skipped checks.
+   - After merge, run `/upgrade-service-docs [service] [slug]` to promote the spec into the living docs.
+</workflow>
+
+<constraints>
+- Follow the stages in the order given; do not implement before the spec is accepted and the failing tests exist.
+- Reuse existing project locations for docs and contracts before creating new ones.
+- Report only what you ran; never claim a skipped check passed.
+- If you lack information needed for a stage, stop and ask one targeted question instead of guessing.
+</constraints>
+
+<output_format>
+After each stage, one line: `Stage N <name>: done | blocked — <artifact path or evidence>`. Final message: PR link, acceptance-criteria table (criterion → test → result), open risks.
+</output_format>
+
+<user_query>
+[Verbatim $ARGUMENTS]
+</user_query>
+```
+
+### 4b. Minimal/full prompts (non-software tasks)
 
 #### Minimal version
 
@@ -134,7 +213,7 @@ If the user explicitly requests a version, honor it.
 ### 5. Output
 
 Present:
-1. Which version was chosen and why (one sentence).
+1. Which track/version was chosen and why (one sentence) — for the SDLC track, include the tier.
 2. The filled-in prompt, ready to copy.
 3. A short list of **flagged defaults** — any fields you filled in with assumptions the user should review (max 3 bullets).
 
@@ -145,6 +224,10 @@ If a field has no good default (e.g., you have no idea what the output schema sh
 ## Decision guide
 
 ```
+Software change (code)?  ──YES──► SDLC-flow prompt: spec → adr → tdd → implement → test → PR
+         │
+         NO
+         │
 Has long documents / variable content?  ──YES──► Full
          │
          NO
@@ -196,3 +279,18 @@ Structured output schema needed?  ──YES──► Full
 > **Flagged defaults:**
 > - Category list is assumed — replace with your actual taxonomy.
 > - Output is the category name only; change `<constraints>` if you need a confidence score or explanation.
+
+---
+
+**User:** `/prompt-builder add rate limiting to the login endpoint in auth-service`
+
+**Output:**
+
+> Choosing the **SDLC-flow** track — code change; touches auth (trust boundary), single backend domain → **full workflow** tier.
+>
+> *(the filled `<role>/<task>/<context>/<workflow>/<constraints>/<output_format>` prompt from §4a, with slug `auth-login-rate-limit`, `<user_query>` set to the request above)*
+>
+> **Flagged defaults:**
+> - Slug `auth-login-rate-limit` is assumed.
+> - Acceptance criteria are left to be derived in stage 1 — supply them if you have them.
+> - No contract change assumed (existing endpoint, new 429 behavior); say so if the OpenAPI spec must change.

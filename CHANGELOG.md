@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.3.0 — 2026-11-12
+
+### Changed
+- `/generate-service-docs` and `/upgrade-service-docs` now ensure `<service>/docs/adr/` (and the system-root `docs/adr/`) exists, index ADRs in the service `README.md`, and report missing/candidate ADRs. ADR content is still owned by tech-lead-subagent and never written by these commands.
+- `/prompt-builder` has an SDLC-flow track for software changes: generated prompts follow spec → adr → tdd → implement → test → create PR with a gate per stage. Non-software prompts keep the minimal/full tracks.
+
 ## 2.2.0 — 2026-11-12
 
 ### Added

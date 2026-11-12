@@ -29,11 +29,12 @@ Source code is the single source of truth for living docs. Never invent anything
 4. Update **service-level living docs** first, in place, in this priority: `api-contracts.md`, `events.md`, `business-logic.md`, `architecture.md`, `data-model.md`, `security.md`, `configuration.md`, `troubleshooting.md`, `README.md`.
    - `api-contracts.md` links the authoritative contract source (layout §6.4); do not re-type schemas.
    - `security.md`: add the spec's implemented security rules to the active rule register as `<feature>/<RULE-ID>` with a link to the spec; retire rules of any spec this one supersedes.
-   - `README.md`: refresh the specs index with the new status.
+   - `README.md`: refresh the specs index with the new status and the ADR index (`adr/`).
 5. Update **system-level living docs** so catalogs and flows stay consistent, in this priority: `03-cross-cutting/all-apis-catalog.md`, `all-events-catalog.md`, `all-topics-and-queues.md`, `02-collaboration/end-to-end-flows.md`, `sequence-diagrams.md`, `integration-points.md`, `01-services/<service-name>.md`, and `00-overview/service-map.md` only if service boundaries or relationships changed.
 6. Use Mermaid for new diagrams. Keep terminology consistent with `glossary.md`. Living docs describe only current behavior; link to open specs instead of narrating intent.
 7. Update the spec `README.md` frontmatter: `status: implemented` or `partially-implemented` (pending items stay visible in the traceability table), `source_revision` as `<repo>@<sha>` for every affected repo, `updated`. If this change supersedes another, set the old spec's `superseded_by`. Never rewrite the spec's intent to match what shipped.
-8. Do not create duplicate files or parallel folder structures; never move or delete `specs/`, `adr/`, `plans/` or legacy role folders.
+8. **ADRs.** Ensure `<service>/docs/adr/` exists (create empty with `.gitkeep` if missing; same at the system root when a cross-service ADR is involved). List the ADRs the spec's `design.md` links, confirm each exists in `adr/` (a missing one → report as a gap, do not write it), and refresh the `README.md` ADR index (number, title, status). Mark an ADR's implementation status only in the index, never by editing the ADR; supersession is recorded by `tech-lead-subagent` in the ADR itself. Mention decisions evident in the code that have no ADR as "candidate ADRs" in the output.
+9. Do not create duplicate files or parallel folder structures; never move or delete `specs/`, `adr/`, `plans/` or legacy role folders.
 </instructions>
 
 <constraints>
@@ -47,5 +48,6 @@ Source code is the single source of truth for living docs. Never invent anything
 1. Short summary of what changed in the code.
 2. Documentation files updated or created (full paths), each with a one-line note.
 3. Spec lifecycle result: old → new status, traceability table, source revisions.
-4. Remaining gaps or items that need human review.
+4. ADR check: `adr/` present, ADRs linked from the spec, missing ADRs, candidate ADRs.
+5. Remaining gaps or items that need human review.
 </output>
