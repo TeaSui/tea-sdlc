@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.1 — 2026-11-12
+
+### Fixed
+- `/prompt-builder` SDLC-flow prompt now matches `references/documentation-layout.md` and the service-docs commands: scoped paths (`<service>/docs/` or system root), read-layout-first and reuse of existing locations, single writer per spec file, `plan.md` for coordinated tiers, ADR ownership/numbering/immutability, fast-path living-doc update, implementers never edit specs/ADRs/living docs, and protected folders are never moved or deleted.
+
 ## 2.3.0 — 2026-11-12
 
 ### Changed

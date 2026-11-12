@@ -64,7 +64,7 @@ If the user explicitly requests a version, honor it.
 
 ### 4a. SDLC-flow prompt (software changes)
 
-Generate this prompt. Fill every `[...]` from the parsed input; leave `[TODO: ...]` + flag when unknown. Artifact paths follow `${CLAUDE_PLUGIN_ROOT}/references/documentation-layout.md`.
+Generate this prompt. Fill every `[...]` from the parsed input; leave `[TODO: ...]` + flag when unknown. Document locations, owners and lifecycle come only from `${CLAUDE_PLUGIN_ROOT}/references/documentation-layout.md` — do not restate or invent a different tree. Keep the generated prompt's paths, file names, owners and status values identical to that file and to `/generate-service-docs` and `/upgrade-service-docs`.
 
 ```xml
 <role>
@@ -77,6 +77,7 @@ You are a senior engineer on [service/repo], working through the tea-sdlc flow. 
 
 <context>
 - Service/repo: [name, path]
+- Doc scope: [service → `[service]/docs/` | system (cross-service) → `<system-root>/docs/`]
 - Feature slug: [kebab-case]
 - Acceptance criteria: [list, or "derive from the description and confirm in stage 1"]
 - Tier: [fast path | coordinated fast path | full workflow | orchestrator] — [why, citing the trust-boundary items hit]
@@ -84,16 +85,19 @@ You are a senior engineer on [service/repo], working through the tea-sdlc flow. 
 </context>
 
 <workflow>
+Before stage 1, read `${CLAUDE_PLUGIN_ROOT}/references/documentation-layout.md`. Resolve the owning scope root (§6.1) and the project's existing locations for specs, ADRs and contracts (§6.2, §6.4); reuse them, never create a parallel tree or a numbered/`-v2` duplicate.
+
 Execute in order. Finish a stage and meet its gate before starting the next. Report the stage you are in.
 
 1. SPEC — define what changes and why.
-   - Full workflow / orchestrator: write `docs/specs/[slug]/` (`requirements.md` with US/AC/BR ids, `security.md` for trust boundaries, `design.md` + `contracts/` for contract changes) and `README.md` with `status: proposed`.
-   - Fast path: state the approach and acceptance criteria in 2–3 lines; no spec folder.
-   - Gate: user approves the spec (set `status: accepted`, `accepted_by`). Do not continue on a `proposed` spec unless told to.
+   - Full workflow / orchestrator: create `[service]/docs/specs/[slug]/` (layout §4). Each file has one writer: `requirements.md` (US/AC/BR ids) and `measurement.md` → business-analyst-subagent; `security.md` (threat model + numbered rules) → security-engineer-subagent; `design.md` + `contracts/` → tech-lead-subagent in contract-mode; `ui-design.md` → ui-ux-designer-subagent. Create only the files the change needs. The main session writes `README.md` with the layout §4 frontmatter (`status: proposed`, `scope`, `affects`, `updated`) and the file index.
+   - Coordinated fast path and above: `plan.md` in the same folder (tasks, ownership, order, parallelism).
+   - Fast path: state the approach and acceptance criteria in 2–3 lines; no spec folder. If the change alters documented behavior, update the affected living file in the same change (layout §6.7).
+   - Gate: the user approves the spec; only then set `status: accepted` and `accepted_by`. Do not continue on a `proposed` spec unless told to.
 
 2. ADR — record decisions that outlive the change.
-   - For each significant decision (architecture, data model, new dependency, API style, security posture), write `docs/adr/NNNN-<decision>.md` (context, options, decision, consequences) and link it from the spec's `design.md`.
-   - If no such decision exists, write one line: "No ADR needed: [reason]". Never rewrite an accepted ADR; supersede it with a new one.
+   - For each significant decision (architecture, data model, new dependency, API style, security posture), write `[service]/docs/adr/NNNN-<decision>.md` (`<system-root>/docs/adr/` when it spans services) with the next free number: context, options, decision, consequences. tech-lead-subagent is the writer. Link it from the spec's `design.md` and from the service `README.md` ADR index.
+   - If no such decision exists, write one line: "No ADR needed: [reason]". An accepted ADR is immutable: supersede it with a new ADR, never rewrite it.
    - Gate: every decision the spec depends on has an ADR or an explicit "no ADR needed".
 
 3. TDD — write failing tests first.
@@ -102,8 +106,8 @@ Execute in order. Finish a stage and meet its gate before starting the next. Rep
    - Gate: failing tests exist and fail correctly.
 
 4. IMPLEMENT — minimum code to go green.
-   - Apply the accepted `contracts/` delta to the project's authoritative contract source. Do not add untested behavior or weaken assertions.
-   - Contradictions with the spec are reported, not silently fixed in the spec.
+   - Apply the accepted `contracts/` delta to the project's authoritative contract source (layout §6.4); do not re-type schemas in prose. Do not add untested behavior or weaken assertions.
+   - Implementers never rewrite spec, ADR or living-doc files. Contradictions with the spec are reported as `DONE_WITH_CONCERNS`, not silently fixed.
    - Gate: the new tests pass.
 
 5. TEST — prove it.
@@ -113,11 +117,12 @@ Execute in order. Finish a stage and meet its gate before starting the next. Rep
 
 6. CREATE PR — hand off.
    - Branch from the default branch, commit in logical steps, open the PR. The description links the spec and ADRs, lists the acceptance criteria with evidence, and notes risks and skipped checks.
-   - After merge, run `/upgrade-service-docs [service] [slug]` to promote the spec into the living docs.
+   - After QA `GO` or merge, run `/upgrade-service-docs [service] [slug]`: it updates the living docs, sets the spec `status: implemented` and `source_revision`, and refreshes the ADR index. Living docs are owned by `/generate-service-docs` and `/upgrade-service-docs`; do not hand-edit them in the PR (fast-path exception above).
 </workflow>
 
 <constraints>
 - Follow the stages in the order given; do not implement before the spec is accepted and the failing tests exist.
+- Never move, rename or delete `specs/`, `adr/`, `plans/` or legacy role folders (`docs/requirements/`, `docs/security/`, `docs/contracts/`, `docs/design/`, `docs/domain/`, `docs/decisions/`); add to them only through the owning stage.
 - Reuse existing project locations for docs and contracts before creating new ones.
 - Report only what you ran; never claim a skipped check passed.
 - If you lack information needed for a stage, stop and ask one targeted question instead of guessing.
