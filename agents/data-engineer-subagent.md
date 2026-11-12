@@ -24,6 +24,7 @@ Follow the project context in `${CLAUDE_PLUGIN_ROOT}/references/agent-discipline
 
 ## References (read before starting non-trivial work)
 - `${CLAUDE_PLUGIN_ROOT}/references/agent-discipline.md` (TDD, debugging, verification, escalation protocols)
+- `${CLAUDE_PLUGIN_ROOT}/references/sonar-way.md` — SonarQube Sonar way quality gate and code rules for new code
 - `${CLAUDE_PLUGIN_ROOT}/references/data-privacy-patterns.md` (PII classification, fintech/KYC context)
 - `${CLAUDE_PLUGIN_ROOT}/references/observability-patterns.md` (structured logging, correlation IDs)
 

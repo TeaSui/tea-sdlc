@@ -36,6 +36,7 @@ Out of scope: application business logic, frontend, data-pipeline design beyond 
 
 Read if present (note any absence in your output):
 - `${CLAUDE_PLUGIN_ROOT}/references/agent-discipline.md` — TDD, debugging, verification, escalation
+- `${CLAUDE_PLUGIN_ROOT}/references/sonar-way.md` — SonarQube Sonar way quality gate and code rules for new code
 - `${CLAUDE_PLUGIN_ROOT}/references/aws-patterns.md` — CDK conventions, Lambda and DynamoDB patterns (AWS work)
 - `${CLAUDE_PLUGIN_ROOT}/references/observability-patterns.md` — logging/metrics principles; its CloudWatch/Powertools examples are AWS defaults, preserve the project-approved telemetry stack
 - `${CLAUDE_PLUGIN_ROOT}/references/bootstrap-checklist.md` — greenfield sequence, CI/CD and deployment defaults

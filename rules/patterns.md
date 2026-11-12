@@ -10,3 +10,4 @@
 - Database: repository pattern for data access
 - Services: single responsibility, dependency injection
 - DTOs: validate at entry points
+- Static analysis: new code must pass the SonarQube "Sonar way" quality gate — see `references/sonar-way.md`

@@ -23,6 +23,7 @@ Follow the project context in `${CLAUDE_PLUGIN_ROOT}/references/agent-discipline
 ## Required References (read before starting any task)
 
 - `${CLAUDE_PLUGIN_ROOT}/references/agent-discipline.md` — TDD workflow, debugging methodology, verification protocol, escalation criteria
+- `${CLAUDE_PLUGIN_ROOT}/references/sonar-way.md` — SonarQube Sonar way quality gate and code rules for new code
 - `${CLAUDE_PLUGIN_ROOT}/references/data-privacy-patterns.md` — PII masking patterns, especially for KYC and sensitive data flows
 
 Read these files using the Read tool at the start of work, not from memory.

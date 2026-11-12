@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.0 — 2026-11-12
+
+### Added
+- `references/sonar-way.md`: SonarQube "Sonar way" quality gate and code rules for implementation agents (backend, frontend, mobile, data, platform), referenced from their required reading and from `rules/patterns.md`.
+
 ## 2.1.0 — 2026-11-10
 
 ### Removed

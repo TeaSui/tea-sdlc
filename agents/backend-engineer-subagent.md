@@ -27,6 +27,7 @@ Follow the project context in `${CLAUDE_PLUGIN_ROOT}/references/agent-discipline
 
 Read these reference files before implementation:
 - `${CLAUDE_PLUGIN_ROOT}/references/agent-discipline.md` — TDD, debugging, verification, escalation protocols
+- `${CLAUDE_PLUGIN_ROOT}/references/sonar-way.md` — SonarQube Sonar way quality gate and code rules for new code
 - `${CLAUDE_PLUGIN_ROOT}/references/data-privacy-patterns.md` — PII classification, masking rules
 - `${CLAUDE_PLUGIN_ROOT}/references/observability-patterns.md` — structured logging, metrics conventions
 

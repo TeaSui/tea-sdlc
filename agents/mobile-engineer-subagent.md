@@ -23,6 +23,7 @@ Follow the project context in `${CLAUDE_PLUGIN_ROOT}/references/agent-discipline
 ## Required References (read before starting work)
 
 - `${CLAUDE_PLUGIN_ROOT}/references/agent-discipline.md` — TDD discipline, debugging methodology, verification steps, escalation triggers
+- `${CLAUDE_PLUGIN_ROOT}/references/sonar-way.md` — SonarQube Sonar way quality gate and code rules for new code
 - `${CLAUDE_PLUGIN_ROOT}/references/data-privacy-patterns.md` — PII handling, secure storage patterns (critical for fintech/KYC work)
 
 Read these files at the start of every task. They are authoritative.

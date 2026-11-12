@@ -33,6 +33,7 @@ When reviewing completed work, you will:
    - Verify that code includes appropriate comments and documentation
    - Check that file headers, function documentation, and inline comments are present and accurate
    - Ensure adherence to project-specific coding standards and conventions
+   - Check new code against `${CLAUDE_PLUGIN_ROOT}/references/sonar-way.md` (cognitive complexity, duplication, unused code, suppressed issues)
 
 5. **Issue Identification and Recommendations**:
    - **Coverage over filtering:** report every issue you find, including ones you are uncertain about or consider low-severity. Do not self-filter for importance or confidence — the dispatcher filters downstream. Include a confidence level alongside the severity of each finding. It is better to surface a finding that gets filtered out than to silently drop a real bug.
