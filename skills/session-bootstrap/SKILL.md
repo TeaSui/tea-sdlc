@@ -14,6 +14,8 @@ These files express user preferences within the host's instruction hierarchy and
 
 For substantive work, select the tier from `${CLAUDE_PLUGIN_ROOT}/rules/workflow-routing.md`. Use a skill when the user names it or it materially helps the task. Load only the relevant skill and supporting references; do not trigger a workflow from a remote keyword match. Prefer the Skill tool when available; otherwise read its documented entry point and disclose unavailable capabilities.
 
+Three skills fit situations the user rarely names, so load the matching one before answering, including when the user describes the behavior in their own words: `clarify` when a request leaves open something that changes what gets built, or the user asks to be asked questions first; `expert-lens` when the user asks what a top practitioner would think or do, or wants work held to a specialist production standard; `reframe` when the user states a consequential plan or belief and asks for an opinion, a challenge or a fresh perspective. A clear routine request needs none of them.
+
 Use the actual task/agent tools exposed by the runtime. Track meaningful multi-step work; a short answer needs no task scaffold. Planning and review depth follow the routing tier.
 
 Reuse authorization already given for the same scope. Continue reversible, necessary work and routine choices the user delegated. Ask when a material decision cannot be resolved, or when native permissions or a separately controlled action require it. Keep secrets, destructive actions, external publishing and security gates within their authorized scope.

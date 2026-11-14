@@ -11,13 +11,13 @@ import sys
 
 MODELS = {'haiku', 'sonnet', 'opus', 'fable', 'inherit'}
 EFFORTS = {'low', 'medium', 'high', 'xhigh', 'max'}
-BUNDLED_DIRS = ('rules', 'references', 'skills', 'templates', 'scripts', 'hooks', 'commands', 'agents')
+BUNDLED_DIRS = ('rules', 'references', 'skills', 'templates', 'scripts', 'hooks', 'commands', 'agents', 'tools')
 # Prose that the plugin authors and loads; vendored/synced skill docs are excluded.
 SCANNED = ('agents', 'commands', 'rules', 'references', 'skills', 'hooks', 'scripts')
 EXCLUDED = ('skills/synced/',)
 # ~/.claude paths that legitimately belong to the user's install, not the plugin.
 USER_PATHS = ('settings.json', 'CLAUDE.md', 'state/', 'projects/', 'agent-memory/')
-BUNDLED_REF = re.compile(r'(?<![\w./~-])(\$\{CLAUDE_PLUGIN_ROOT\}/)?((?:%s)/[A-Za-z0-9_./-]+\.(?:md|py|sh|json))'
+BUNDLED_REF = re.compile(r'(?<![\w./~-])(\$\{CLAUDE_PLUGIN_ROOT\}/)?((?:%s)/[A-Za-z0-9_./-]+\.(?:md|py|sh|json|mjs))'
                          % '|'.join(BUNDLED_DIRS))
 USER_REF = re.compile(r'~/\.claude/([A-Za-z0-9_./-]+)')
 FRONTMATTER = re.compile(r'\A---\r?\n(.*?)\r?\n---', re.S)

@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.4.0 — 2026-11-14
+
+### Added
+- Three thinking-tool skills that trigger from the situation (no slash command needed) and remain callable by name:
+  - `clarify` — inspect the project first, then ask only the questions whose answers change the work, each with the default that applies if unanswered.
+  - `expert-lens` — what the field's best practitioner would notice, do first and refuse to do, with evidence per observation.
+  - `reframe` — strongest case against the current view, its load-bearing assumption, a different framing and the cheapest check that settles it.
+- The eval-upgrade tool is bundled at `tools/eval-upgrade/` (Node ≥ 20, zero dependencies). `/eval-upgrade` no longer needs `$EVAL_UPGRADE_HOME` or any external checkout. Results, proposals, arena ledgers and the optional `config.json` live in `~/.claude/state/eval-upgrade` (`$EVAL_UPGRADE_STATE_DIR` overrides), so they survive plugin updates.
+- `hooks/hooks.json` registers the eval-upgrade auto-trigger (`PostToolUse`, async). It is inert unless `autoTrigger.enabled` is set in the state `config.json`.
+
+### Changed
+- eval-upgrade arena: the challenger is auto-promoted only if it reaches `arena.pointsToWin` (10) before the champion reaches `arena.pointsToDefend` (4). The previous symmetric first-to-10 race promoted a challenger of equal quality half the time; the new rule does so about 5% of the time.
+- eval-upgrade: models are family aliases (`sonnet`, `opus`) instead of pinned ids; headless calls run without tools or skills so an installed copy of the asset under test cannot leak into a duel; the judge scores the answers rather than the instruction-file rubric; promotion and apply are confined to the directory that was evaluated, so `--target` arenas can promote; plugin-namespaced skill and agent names resolve in the auto-trigger; dashboard output is HTML-escaped and `server.mjs --open` passes the session token straight to the browser.
+- `/prove-it` covers factual claims (root cause, code facts, external API facts) as well as completion claims, requires each check to be one that would fail if the claim were false, and reports `VERIFIED` / `NARROWED` / `REFUTED` / `UNVERIFIED` with the record corrected.
+- `verification-before-completion` rewritten in the plugin's plain register (142 → 43 lines): same four-step gate and claim/evidence table, reasons in place of threats, plus explicit handling for checks that cannot run or that the user waived. A 72-session comparison on Sonnet and Haiku found no behavioral difference from the previous text; the change is for consistency and size.
+
 ## 2.3.1 — 2026-11-12
 
 ### Fixed

@@ -2,7 +2,7 @@
 
 > Software Development Life Cycle plugin for Claude Code — specialist subagents, trust-boundary routing, a canonical documentation layout and automated quality gates.
 
-**Version 2.2.0** · [Changelog](CHANGELOG.md) · MIT
+**Version 2.4.0** · [Changelog](CHANGELOG.md) · MIT
 
 `tea-sdlc` turns Claude Code into a coordinated engineering team: 12 specialist subagents, a 4-tier workflow router that escalates on trust boundaries, one documentation structure shared by every agent and command, and hooks that block secret leaks and unreviewed PRs.
 
@@ -124,9 +124,9 @@ Existing projects keep their established locations; the layout file maps legacy 
 | `/upgrade-service-docs` | Promote an implemented change into the living docs and close its spec |
 | `/tdd-feature` | Failing tests first, implement to green, full-suite regression check |
 | `/debug-parallel` | Parallel config, diagnostics, code-path and history investigation for multi-service errors |
-| `/prove-it` | List every completion claim and run the command that proves each one |
+| `/prove-it` | List every claim just made and run a check that would fail if it were false; narrow or withdraw what the evidence does not support |
 | `/prompt-builder` | Design a Claude prompt from a description; software changes follow spec → adr → tdd → implement → test → PR |
-| `/eval-upgrade` | Score and A/B-duel Claude Code assets; requires the external tool at `$EVAL_UPGRADE_HOME` |
+| `/eval-upgrade` | Score, upgrade and A/B-duel Claude Code assets with the bundled tool in `tools/eval-upgrade/` (Node ≥ 20, no dependencies); state is kept in `~/.claude/state/eval-upgrade` |
 
 ---
 
@@ -137,6 +137,7 @@ Existing projects keep their established locations; the layout file maps legacy 
 | Workflow | `session-bootstrap`, `orchestrating-multi-domain-work`, `brainstorming`, `writing-plans`, `subagent-driven-development`, `executing-plans`, `dispatching-parallel-agents`, `goal` |
 | Quality | `test-driven-development`, `systematic-debugging`, `verification-before-completion`, `validate-feature`, `requesting-code-review`, `receiving-code-review`, `finishing-a-development-branch`, `incident-to-eval` |
 | Grounding | `grounding-claims`, `find-docs`, `context7-mcp` |
+| Thinking tools | `clarify` (ask only what changes the work), `expert-lens` (what the best practitioner would notice, do first, refuse), `reframe` (strongest case against the current view) — triggered by the situation or as `/clarify`, `/expert-lens`, `/reframe` |
 | Documentation | `writing-software-docs` (BRD, PRD, FRD, user stories, RFC, ADR, specification, concern report) |
 | Domain | `backend-languages`, `frontend-react`, `fintech-mobile`, `fintech-security`, `database-patterns`, `messaging-patterns`, `data-pipeline-patterns`, `api-contract-testing`, `bdd-cucumber`, `cdk-testing`, `observability` |
 

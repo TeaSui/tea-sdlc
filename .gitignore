@@ -17,3 +17,6 @@ Thumbs.db
 
 # Test / Scratch files
 .test_probe
+
+# Skills synced in by the Claude app; not part of this plugin
+skills/synced/

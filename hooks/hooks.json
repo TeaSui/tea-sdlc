@@ -1,5 +1,5 @@
 {
-  "description": "tea-sdlc security, review gates, and session bootstrap hooks",
+  "description": "tea-sdlc security, review gates, session bootstrap and eval-upgrade auto-trigger hooks",
   "hooks": {
     "PreToolUse": [
       {
@@ -25,6 +25,19 @@
           {
             "type": "command",
             "command": "/bin/bash \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Skill|Task|Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v node >/dev/null 2>&1 && node \"${CLAUDE_PLUGIN_ROOT}/tools/eval-upgrade/hooks/auto-trigger.mjs\" || true",
+            "async": true,
             "timeout": 10
           }
         ]

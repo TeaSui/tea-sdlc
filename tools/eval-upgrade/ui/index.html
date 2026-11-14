@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>eval-upgrade — Claude assets dashboard</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header>
+  <div>
+    <h1>eval-upgrade</h1>
+    <p class="sub">Evaluate &amp; upgrade Claude Code assets — <span id="target-label">…</span></p>
+  </div>
+  <div class="header-actions">
+    <label class="switch master" title="Master toggle: when off, evaluation runs are refused">
+      <input type="checkbox" id="master-toggle">
+      <span class="slider"></span>
+      <span class="switch-label">System</span>
+    </label>
+    <button id="run-btn" class="primary">Run evaluation</button>
+  </div>
+</header>
+
+<section id="banner" class="banner hidden"></section>
+
+<section class="panel" id="toggles-panel">
+  <div class="panel-head">
+    <h2>Scope</h2>
+    <div>
+      <label class="switch" title="LLM review adds a model-based audit for low-scoring artifacts (costs tokens)">
+        <input type="checkbox" id="llm-toggle">
+        <span class="slider"></span>
+        <span class="switch-label">LLM review</span>
+      </label>
+      <button id="save-config" disabled>Save config</button>
+    </div>
+  </div>
+  <div id="type-toggles" class="type-toggles"></div>
+  <p class="hint">Toggles are staged locally — <strong>Save config</strong> persists them to config.json. A type toggled off is excluded from the next run (not scored, not aggregated).</p>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>Summary</h2>
+    <span id="run-time" class="muted"></span>
+  </div>
+  <div id="summary-cards" class="cards"></div>
+</section>
+
+<section class="panel">
+  <div class="panel-head">
+    <h2>Artifacts</h2>
+    <input type="search" id="filter" placeholder="Filter by name / type / finding…">
+  </div>
+  <table id="artifacts">
+    <thead>
+      <tr><th data-sort="score">Score</th><th data-sort="id">Artifact</th><th data-sort="type">Type</th><th>Findings</th><th>Arena</th><th></th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<dialog id="arena-modal">
+  <div class="modal-head">
+    <h3 id="arena-title"></h3>
+    <button id="arena-close">✕</button>
+  </div>
+  <div id="arena-body">
+    <div id="arena-scoreboard"></div>
+    <div class="arena-actions">
+      <button id="arena-new" class="primary">Generate challenger</button>
+      <button id="arena-duel-1">Run 1 duel</button>
+      <button id="arena-duel-3">Run 3 duels</button>
+      <button id="arena-promote" class="danger">Promote now</button>
+      <button id="arena-discard">Discard challenger</button>
+    </div>
+    <p class="hint" id="arena-hint"></p>
+    <details id="arena-tasks-box"><summary>Task bank</summary><ul id="arena-tasks"></ul></details>
+    <details id="arena-history-box" open><summary>Duel history</summary><div id="arena-history"></div></details>
+    <details id="arena-compare-box"><summary>Compare: champion vs challenger</summary>
+      <div class="compare">
+        <div><h4>Champion (on disk)</h4><pre id="arena-champion"></pre></div>
+        <div><h4>Challenger</h4><pre id="arena-challenger"></pre></div>
+      </div>
+    </details>
+  </div>
+</dialog>
+
+<dialog id="proposal-modal">
+  <div class="modal-head">
+    <h3 id="proposal-title"></h3>
+    <button id="close-modal">✕</button>
+  </div>
+  <pre id="proposal-body"></pre>
+  <div class="modal-actions">
+    <span id="proposal-note" class="muted"></span>
+    <button id="apply-btn" class="danger">Apply to file (backup kept)</button>
+  </div>
+</dialog>
+
+<script src="/app.js"></script>
+</body>
+</html>
